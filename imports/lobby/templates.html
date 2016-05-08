@@ -1,0 +1,20 @@
+<template name="lobbyScreen">
+    {{! Context: Lobby }}
+    <header>
+        <h1>Lobby {{_id}}</h1>
+
+        owner: {{owner}}
+    </header>
+
+    <h2>Players</h2>
+    <ul>
+        {{#each userId in userIds}}
+            <li>
+                {{> playerReference userId}}
+            </li>
+        {{/each}}
+    </ul>
+
+    <h2>Game</h2>
+    {{> gameReference gameId}}
+</template>
