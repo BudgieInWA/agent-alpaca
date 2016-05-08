@@ -1,2 +1,2 @@
-//import '/modules/lobby/methods.js';
-//import '/modules/lobby/publish.js';
+//import '/imports/lobby/methods.js';
+//import '/imports/lobby/publish.js';

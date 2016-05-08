@@ -22,5 +22,5 @@ Template.lobbyScreen.events({
 export default {
     view: Template.lobbyScreen,
     edit: Template.lobbyScreen,
-    list: Template.lobbyList,
+    list: Template.lobbyListScreen,
 }

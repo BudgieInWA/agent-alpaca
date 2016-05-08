@@ -18,3 +18,17 @@
     <h2>Game</h2>
     {{> gameReference gameId}}
 </template>
+
+<template name="lobbyListScreen">
+    <header>
+        <h1>Public Lobbies</h1>
+    </header>
+
+    <ul>
+        {{#each lobby in lobbies}}
+            <li>
+                <a href="/lobby/{{lobby._id}}">{{_id}}</a>
+            </li>
+        {{/each}}
+    </ul>
+</template>
