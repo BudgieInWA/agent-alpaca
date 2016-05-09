@@ -5,30 +5,20 @@ import messages from '/imports/messages';
 
 import schema from './schema.js';
 import collection from './collection.js';
-import './methods.js';
+import methods from './methods.js';
 
 import './templates.html';
 
 Template.gameScreen.onCreated(function () {
-    this.subscribe('lobby.list.public');
 });
 
 Template.gameScreen.helpers({
-    lobbies() {
-        return collection.find();
+    something() {
     },
 });
 
 Template.gameScreen.events({
-    'click .create-lobby'(event, template) {
-        Meteor.call('lobby.create', function(err, res) {
-            if (err) {
-                messages.error("Couldn't create new lobby: " + err);
-            } else {
-                messages.info("New lobby created!");
-                FlowRouter.go('lobby.view', {id: res});
-            }
-        });
+    'click .something'(event, template) {
     },
 });
 

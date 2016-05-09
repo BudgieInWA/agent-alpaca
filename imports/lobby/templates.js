@@ -5,8 +5,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import messages from '/imports/messages';
 
-import schema from './schema.js';
 import collection from './collection.js';
+import methods from './methods.js';
 
 import './templates.html';
 
@@ -40,7 +40,7 @@ Template.lobbyScreen.helpers({
 Template.lobbyScreen.events({
     'click .join-lobby'() {
         const id = Template.instance().id.get();
-        Meteor.call('lobby.join', id, function(err, res) {
+        methods.join.call({ id }, function(err, res) {
             if (err) {
                 messages.error("Couldn't join lobby: " + err);
             } else {
@@ -50,12 +50,12 @@ Template.lobbyScreen.events({
     },
     'click .leave-lobby'() {
         const id = Template.instance().id.get();
-        Meteor.call('lobby.leave', id, function (err, res) {
+        methods.leave.call({ id }, function (err, res) {
             if (err) {
                 messages.error("Couldn't leave lobby: " + err);
             } else {
                 messages.info("Left lobby!");
-                FlowRouter.go('lobby.list');
+                //FlowRouter.go('lobby.list');
             }
         });
     },
@@ -74,7 +74,7 @@ Template.lobbyListScreen.helpers({
 
 Template.lobbyListScreen.events({
     'click .create-lobby'(event, template) {
-        Meteor.call('lobby.create', function(err, res) {
+        methods.create.call(function(err, res) {
             if (err) {
                 messages.error("Couldn't create new lobby: " + err);
             } else {

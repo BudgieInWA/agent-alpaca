@@ -9,6 +9,9 @@ meteor-base             # Packages every Meteor app needs to have
 mongo                   # The database Meteor supports right now
 aldeed:collection2
 aldeed:simple-schema    # Database Schemas
+mdg:validated-method
+rlivingston:simple-schema-mixin  # for ValidatedMethod
+tunifight:loggedin-mixin         # for ValidatedMethod TODO write a better one
 
 brettle:accounts-anonymous
 
