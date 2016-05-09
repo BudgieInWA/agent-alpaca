@@ -7,5 +7,18 @@ import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin';
 import Games from './collection.js';
 
 export default {
+    create: new ValidatedMethod({
+        name: 'game.create',
+        mixins: [SimpleSchemaMixin, LoggedInMixin],
+        checkLoggedInError: {
+            error: 'not-logged-in',
+            message: "Must be logged in to create a game.",
+        },
+        schema: {
+            players: {type: String},
+        },
+        run: function ({ id, gameId }) {
 
+        }
+    }),
 }

@@ -6,6 +6,8 @@ import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin';
 
 import Lobbies from './collection.js';
 
+import Games from '/imports/game/collection.js';
+
 let things;
 if (Meteor.isServer) {
     things = require('/imports/things').default;
@@ -23,7 +25,7 @@ export default {
         run: function() {
             let name = "Your New Lobby";
             if (Meteor.isServer) {
-                name = "The Congregation for the " + things.fancyNoun({ letterCase: 'title'});
+                name = "Battle of the " + things.fancyNoun({ letterCase: 'title'});
             }
 
             return Lobbies.insert({
@@ -111,5 +113,42 @@ export default {
                 modification
             );
         }
+    }),
+
+    startGame: new ValidatedMethod({
+        name: 'lobby.startGame',
+        mixins: [SimpleSchemaMixin, LoggedInMixin],
+        checkLoggedInError: {
+            error: 'not-logged-in',
+            message: "Must be logged in to start a game.",
+        },
+        schema: {
+            id: { type: String },
+        },
+        run: function ({ id }) {
+            const lobby = Lobbies.findOne({ _id: id });
+            if (lobby.ownerId !== this.userId) {
+                throw new Meteor.Error('not-lobby-owner', "Must be lobby owner to start the game.");
+            }
+
+            if (lobby.userIds.length < 4) {
+                throw new Meteor.Error('not-enough-players',
+                    "Must have at least 4 players to start a game.");
+            }
+
+            // Split players into teams.
+            const numPlayers = lobby.userIds.length;
+            const game = {
+                name: lobby.name,
+                players: {
+                    red: lobby.userIds.slice(0, Math.floor(numPlayers/2)),
+                    blue: lobby.userIds.slice(Math.floor(numPlayers/2)),
+                },
+            };
+
+            const gameId = Games.insert(game);
+            Lobbies.update(id, { $set: { gameId } });
+            return gameId;
+        },
     }),
 };

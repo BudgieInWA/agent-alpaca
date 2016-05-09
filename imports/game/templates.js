@@ -29,7 +29,12 @@ Template.gameReference.onCreated(function () {
 });
 Template.gameReference.helpers({
     name() {
-        return Games.findOne({ _id: this.id }).name;
+        const game = Games.findOne({ _id: this.id });
+        if (game) {
+            return game.name;
+        } else {
+            return "unknown";
+        }
     }
 });
 

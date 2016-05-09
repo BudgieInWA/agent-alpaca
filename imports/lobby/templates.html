@@ -30,9 +30,12 @@
 
             <h2>Game</h2>
             {{#if gameId}}
-                {{> gameReference gameId}}
+                {{> gameReference id=gameId}}
             {{else}}
-                Ready? Start! TODO
+                <button class="start-game" {{if_Then_ reasonsNotToStart "disabled"}}>
+                    Start Game
+                </button>
+                {{reasonsNotToStart}}
             {{/if}}
         {{else}}
             unknown

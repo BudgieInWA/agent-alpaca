@@ -2,6 +2,9 @@ import { Meteor } from 'meteor/meteor';
 
 import messages from '/imports/messages';
 
+// Monkeypatch various meteor bits to change things that are silly.
+import './fixMeteor.js';
+
 // Set up routes.
 import './routes.js';
 // Make components available.

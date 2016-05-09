@@ -75,6 +75,11 @@ export const round = new SimpleSchema({
 });
 
 export default new SimpleSchema({
+    name: {
+        label: "Name",
+        type: String,
+    },
+
     players: {
         label: "Players",
         type: Object,
@@ -92,5 +97,6 @@ export default new SimpleSchema({
     round: {
         label: "Current Round",
         type: round,
+        optional: true,
     }
 })

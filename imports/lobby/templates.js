@@ -35,6 +35,17 @@ Template.lobbyScreen.helpers({
         const doc = Template.instance().doc.get();
         return _.includes(doc.userIds, Meteor.userId());
     },
+
+    reasonsNotToStart() {
+        const lobby = Template.instance().doc.get();
+        if (lobby.userIds.length < 4) {
+            return "Not enough players.";
+        }
+
+        if (lobby.ownerId != Meteor.userId()) {
+            return "The lobby owner can start!";
+        }
+    }
 });
 
 Template.lobbyScreen.events({
@@ -56,6 +67,17 @@ Template.lobbyScreen.events({
             } else {
                 messages.info("Left lobby!");
                 //FlowRouter.go('lobby.list');
+            }
+        });
+    },
+
+    'click .start-game'() {
+        const id = Template.instance().id.get();
+        methods.startGame.call({ id }, function(err, res) {
+            if (err) {
+                messages.error("Couldn't start game: " + err);
+            } else {
+                messages.info("Game started!");
             }
         });
     },
