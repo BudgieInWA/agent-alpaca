@@ -1,17 +1,40 @@
 <template name="gameScreen">
-    {{! Context: Lobby }}
-    <header>
-        <h1>Game {{name}}</h1>
-    </header>
+    {{#if Template.subscriptionsReady}}
+        {{#with doc}}
+            <header>
+                <h1>Game {{name}}</h1>
+            </header>
 
-    <h2>Players</h2>
-    <ul>
-        {{#each userId in userIds}}
-            <li>
-                {{> userReference id=userId}}
-            </li>
-        {{/each}}
-    </ul>
+            <h2>Players</h2>
+
+            <h3>Red Team</h3>
+            <ul>
+                {{#each userId in players.red}}
+                    <li>
+                        {{> userReference id=userId}}
+                    </li>
+                {{/each}}
+            </ul>
+
+            <h3>Blue Team</h3>
+            <ul>
+                {{#each userId in players.blue}}
+                    <li>
+                        {{> userReference id=userId}}
+                    </li>
+                {{/each}}
+            </ul>
+
+            {{#if canStartRound}}
+                <button class="start-round">Start Round</button>
+            {{/if}}
+
+        {{else}}
+            unknown game
+        {{/with}}
+    {{else}}
+        {{> inlineSpinner}}
+    {{/if}}
 </template>
 
 <!-- Context: game _id -->

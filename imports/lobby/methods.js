@@ -115,6 +115,8 @@ export default {
         }
     }),
 
+    //TODO kick
+
     startGame: new ValidatedMethod({
         name: 'lobby.startGame',
         mixins: [SimpleSchemaMixin, LoggedInMixin],

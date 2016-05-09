@@ -8,3 +8,18 @@ Meteor.publish('game.reference', function(id) {
 
     return Games.find(id, { fields: { name: 1 } });
 });
+
+Meteor.publish('game.details', function(id) {
+    check(id, String);
+
+    return Games.find(
+        {
+            _id: id,
+            $or: [
+                { 'players.red' : this.userId },
+                { 'players.blue': this.userId },
+            ],
+        },
+        { fields: { 'round.board.colour': 0 } }
+    );
+});

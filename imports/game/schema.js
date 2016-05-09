@@ -41,11 +41,11 @@ export const round = new SimpleSchema({
         label: "Spymasters",
         type: Object,
     },
-    'spymasters.redPlayerId': {
+    'spymasters.red': {
         label: "Red Spymaster",
         type: String,
     },
-    'spymasters.bluePlayerId': {
+    'spymasters.blue': {
         label: "Blue Spymaster",
         type: String,
     },

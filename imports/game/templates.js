@@ -10,10 +10,20 @@ import methods from './methods.js';
 import './templates.html';
 
 Template.gameScreen.onCreated(function () {
+    this.id = new ReactiveVar(null);
+    this.doc = new ReactiveVar(null);
+    this.autorun(() => {
+        this.id.set(FlowRouter.getParam('id'));
+        this.subscribe('game.details', this.id.get());
+    });
+    this.autorun(() => {
+        this.doc.set(Games.findOne({ _id: this.id.get() }))
+    });
 });
 
 Template.gameScreen.helpers({
-    something() {
+    doc() {
+        return Template.instance().doc.get();
     },
 });
 
