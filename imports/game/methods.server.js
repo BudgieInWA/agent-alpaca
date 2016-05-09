@@ -7,6 +7,6 @@ import Games from './collection.js';
 
 // TODO wrap up methods so you need to reference them.
 Meteor.methods({
-    '': function() {
+    'game.someSecretMethod': function() {
     },
 });

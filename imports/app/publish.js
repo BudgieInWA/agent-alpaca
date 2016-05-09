@@ -1,4 +1,5 @@
 import { Meteor } from  'meteor/meteor';
+import { check } from  'meteor/check';
 
 Meteor.publish('user.reference', function(id) {
     check(id, String);
