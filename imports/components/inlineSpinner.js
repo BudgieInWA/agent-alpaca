@@ -1,0 +1,1 @@
+import './inlineSpinner.html';

@@ -20,12 +20,14 @@ FlowRouter.route('/', {
 
 
 FlowRouter.route('/lobby/list', {
+    name: 'lobby.list',
     action(params, queryParams) {
         renderScreen(lobbyScreens.list);
     }
 });
 
 FlowRouter.route('/lobby/:id', {
+    name: 'lobby.view',
     action(params, queryParams) {
         renderScreen(lobbyScreens.view);
     }

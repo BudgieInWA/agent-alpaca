@@ -1,22 +1,38 @@
 <template name="lobbyScreen">
     {{! Context: Lobby }}
-    <header>
-        <h1>Lobby {{_id}}</h1>
+    {{#if Template.subscriptionsReady}}
+        {{#with doc}}
+            <header>
+                <h1>Lobby {{name}}</h1>
 
-        owner: {{owner}}
-    </header>
+                owner: {{> userReference id=ownerId}}
+            </header>
 
-    <h2>Players</h2>
-    <ul>
-        {{#each userId in userIds}}
-            <li>
-                {{> playerReference userId}}
-            </li>
-        {{/each}}
-    </ul>
+            <h2>Players</h2>
+            <ul>
+                {{#each userId in userIds}}
+                    <li>
+                        {{> userReference id=userId}}
+                    </li>
+                {{else}}
+                    <li class="empty-list">
+                        No Users :(
+                    </li>
+                {{/each}}
+            </ul>
 
-    <h2>Game</h2>
-    {{> gameReference gameId}}
+            <h2>Game</h2>
+            {{#if gameId}}
+                {{> gameReference gameId}}
+            {{else}}
+                Ready? Start! TODO
+            {{/if}}
+        {{else}}
+            unknown
+        {{/with}}
+    {{else}}
+        {{> inlineSpinner}}
+    {{/if}}
 </template>
 
 <template name="lobbyListScreen">
@@ -26,11 +42,19 @@
 
     <button class="create-lobby">New Lobby</button>
 
-    <ul>
-        {{#each lobby in lobbies}}
-            <li>
-                <a href="/lobby/{{lobby._id}}">{{_id}}</a>
-            </li>
-        {{/each}}
-    </ul>
+    {{#if Template.subscriptionsReady}}
+        <ul>
+            {{#each lobby in lobbies}}
+                <li>
+                    <a href="/lobby/{{lobby._id}}">{{lobby.name}}</a>
+                </li>
+            {{else}}
+                <li class="empty-list">
+                    No Lobbies :( Create one your self!
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        {{> inlineSpinner}}
+    {{/if}}
 </template>

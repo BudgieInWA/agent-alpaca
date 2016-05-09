@@ -10,6 +10,7 @@ mongo                   # The database Meteor supports right now
 aldeed:collection2
 aldeed:simple-schema    # Database Schemas
 
+brettle:accounts-anonymous
 
 # Util
 jquery                  # Helpful client-side library

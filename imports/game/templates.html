@@ -1,0 +1,26 @@
+<template name="gameScreen">
+    {{! Context: Lobby }}
+    <header>
+        <h1>Game {{name}}</h1>
+    </header>
+
+    <h2>Players</h2>
+    <ul>
+        {{#each userId in userIds}}
+            <li>
+                {{> userReference id=userId}}
+            </li>
+        {{/each}}
+    </ul>
+</template>
+
+<!-- Context: game _id -->
+<template name="gameReference">
+    <a href="/game/{{id}}">
+        {{#if Template.subscriptionsReady}}
+            {{name}}
+        {{else}}
+            loading...
+        {{/if}}
+    </a>
+</template>

@@ -1,6 +1,5 @@
 import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import messages from '/imports/messages';
 
@@ -10,33 +9,17 @@ import './methods.js';
 
 import './templates.html';
 
-Template.lobbyScreen.onCreated(function () {
-    this.id = new ReactiveVar(null);
-    this.autorun(() => {
-        this.id.set(FlowRouter.getParam('id'));
-        this.subscribe('lobby.details', this.id.get());
-    })
-});
-
-Template.lobbyScreen.helpers({
-    doc() {
-        const id = Template.instance().id.get();
-        return collection.findOne({ _id: id });
-    },
-});
-
-
-Template.lobbyListScreen.onCreated(function () {
+Template.gameScreen.onCreated(function () {
     this.subscribe('lobby.list.public');
 });
 
-Template.lobbyListScreen.helpers({
+Template.gameScreen.helpers({
     lobbies() {
         return collection.find();
     },
 });
 
-Template.lobbyListScreen.events({
+Template.gameScreen.events({
     'click .create-lobby'(event, template) {
         Meteor.call('lobby.create', function(err, res) {
             if (err) {
@@ -49,8 +32,18 @@ Template.lobbyListScreen.events({
     },
 });
 
+Template.gameReference.onCreated(function () {
+    this.autorun(() => {
+        this.subscribe('game.reference', this.data.id);
+    });
+});
+Template.gameReference.helpers({
+    name() {
+        return collection.findOne({ _id: this.id }).name;
+    }
+});
+
 export default {
-    view: 'lobbyScreen',
-    edit: 'lobbyScreen',
-    list: 'lobbyListScreen',
+    view: 'gameScreen',
+    edit: 'gameScreen',
 }

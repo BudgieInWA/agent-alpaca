@@ -1,0 +1,9 @@
+<template name="userReference">
+    {{#if Template.subscriptionsReady}}
+        <span class="user-name">
+            {{doc._id}}
+        </span>
+    {{else}}
+        {{> inlineSpinner}}
+    {{/if}}
+</template>
