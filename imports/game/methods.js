@@ -16,10 +16,10 @@ function checkInGame(game, playerId) {
     if (!game) {
         throw new Meteor.Error('game-not-found', "Cannot find the game.");
     }
-    if (!_.includes(game.players.red, playerId) &&
-        !_.includes(game.players.blue, playerId)) {
-        throw new Meteor.Error('not-in-game', "Must be in a game to make a move.");
-    }
+    if (_.includes(game.players.red, playerId)) return 'red';
+    if (_.includes(game.players.blue, playerId)) return 'blue';
+
+    throw new Meteor.Error('not-in-game', "Must be in a game to make a move.");
 }
 
 function makeBoard({ rows = 5, columns = 5, numBlue = 8, numRed = 9, numBlack = 1 }) {
@@ -77,5 +77,37 @@ export default {
 
             Games.update( id, { $set: { round } }, {filter: false});
         }
+    }),
+
+    nextTurn: new ValidatedMethod({
+        name: 'game.nextTurn',
+        mixins: [SimpleSchemaMixin, LoggedInMixin],
+        checkLoggedInError: {
+            error: 'not-logged-in',
+            message: "Must be logged in to start a turn.",
+        },
+        schema: {
+            id: { type: String },
+        },
+        run: function ({ id }) {
+            const game = Games.findOne(id);
+            const team = checkInGame(game, this.userId);
+
+            const turn = {
+                number: 1,
+                team: 'red',
+            };
+
+            if (game.round.turn) {
+                if (game.round.turn.team !== team) {
+                    throw new Meteor.Error('not-your-turn', "Must be your turn to move.");
+                }
+
+                turn.number = game.round.turn.number + 1;
+                turn.team = (game.round.turn.team === 'red' ? 'blue' : 'red');
+            }
+
+            Games.update(id, { $set: { 'round.turn': turn } });
+        },
     }),
 }

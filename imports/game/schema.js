@@ -15,6 +15,7 @@ export const turn = new SimpleSchema({
     clue: {
         label: "Current Clue",
         type: Object,
+        optional: true,
     },
     'clue.word': {
         label: "Clue Word",
@@ -28,6 +29,7 @@ export const turn = new SimpleSchema({
     guessesRemaining: {
         label: "Guesses Remaining",
         type: Number,
+        optional: true,
     },
 });
 

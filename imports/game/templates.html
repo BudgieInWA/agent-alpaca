@@ -51,6 +51,24 @@
                     {{/each}}
                 </table>
 
+                <h3>Turn {{round.turn.number}} ({{round.turn.team}})</h3>
+                {{#if round.turn}}
+                    {{#if round.turn.clue}}
+                        Clue: {{round.turn.clue.word}} {{round.turn.clue.number}}
+                        Remaining Guesses: {{round.turn.remainingGuesses}}
+                    {{else}}
+                        {{#if canGiveClue}}
+                            TODO box for clue
+                        {{else}}
+                            Waiting for clue...
+                        {{/if}}
+                    {{/if}}
+                {{/if}}
+
+                {{#if canStartTurn}}
+                    <button class="next-turn">Next Turn</button>
+                {{/if}}
+
             {{/if}}
 
             {{#if canStartRound}}
