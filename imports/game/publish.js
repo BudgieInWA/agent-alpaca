@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import collection from './collection.js'
+import Games from './collection.js'
 
 Meteor.publish('', function() {
 });

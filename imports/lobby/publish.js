@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import collection from './collection.js'
+import Lobbies from './collection.js'
 
 Meteor.publish('lobby.details', function(id) {
     check(id, String);
 
-    return collection.find(
+    return Lobbies.find(
         { _id: id },
         {
             fields: { },
@@ -15,7 +15,7 @@ Meteor.publish('lobby.details', function(id) {
 });
 
 Meteor.publish('lobby.list.public', function() {
-    return collection.find(
+    return Lobbies.find(
         { public: true },
         {
             fields: {
@@ -29,7 +29,7 @@ Meteor.publish('lobby.list.public', function() {
 Meteor.publish('lobby.list.my', function() {
     if (!this.userId) return this.ready();
 
-    return collection.find(
+    return Lobbies.find(
         { ownerId: this.userId },
         {
             fields: {

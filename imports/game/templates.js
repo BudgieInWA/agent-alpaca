@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import messages from '/imports/messages';
 
 import schema from './schema.js';
-import collection from './collection.js';
+import Games from './collection.js';
 import methods from './methods.js';
 
 import './templates.html';
@@ -29,7 +29,7 @@ Template.gameReference.onCreated(function () {
 });
 Template.gameReference.helpers({
     name() {
-        return collection.findOne({ _id: this.id }).name;
+        return Games.findOne({ _id: this.id }).name;
     }
 });
 

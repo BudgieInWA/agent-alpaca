@@ -5,7 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import messages from '/imports/messages';
 
-import collection from './collection.js';
+import Lobbies from './collection.js';
 import methods from './methods.js';
 
 import './templates.html';
@@ -18,7 +18,7 @@ Template.lobbyScreen.onCreated(function () {
         this.subscribe('lobby.details', this.id.get());
     });
     this.autorun(() => {
-        this.doc.set(collection.findOne({ _id: this.id.get() }))
+        this.doc.set(Lobbies.findOne({ _id: this.id.get() }))
     });
 });
 
@@ -68,7 +68,7 @@ Template.lobbyListScreen.onCreated(function () {
 
 Template.lobbyListScreen.helpers({
     lobbies() {
-        return collection.find();
+        return Lobbies.find();
     },
 });
 
