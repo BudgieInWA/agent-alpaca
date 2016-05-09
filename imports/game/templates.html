@@ -25,8 +25,36 @@
                 {{/each}}
             </ul>
 
+
+            <h2>Round {{round.number}}</h2>
+            {{#if round}}
+                <h3>Spymasters</h3>
+                <dl>
+                    <dt>Red</dt>
+                    <dd>{{> userReference id=round.spymasters.red}}</dd>
+                    <dt>Blue</dt>
+                    <dd>{{> userReference id=round.spymasters.blue}}</dd>
+                </dl>
+
+                <h3>Board</h3>
+                <table>
+                    {{#each row in round.board}}
+                        <tr>
+                            {{#each card in row}}
+                                <td>
+                                    {{card.colour}}
+                                    agent
+                                    {{card.word}}
+                                </td>
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                </table>
+
+            {{/if}}
+
             {{#if canStartRound}}
-                <button class="start-round">Start Round</button>
+                <button class="start-round">Start Next Round</button>
             {{/if}}
 
         {{else}}

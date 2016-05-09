@@ -51,13 +51,7 @@ Template.lobbyScreen.helpers({
 Template.lobbyScreen.events({
     'click .join-lobby'() {
         const id = Template.instance().id.get();
-        methods.join.call({ id }, function(err, res) {
-            if (err) {
-                messages.error("Couldn't join lobby: " + err);
-            } else {
-                messages.info("Joined lobby!");
-            }
-        });
+        methods.join.call({ id }, messages.methodCallback("Join Lobby"));
     },
     'click .leave-lobby'() {
         const id = Template.instance().id.get();
@@ -73,13 +67,7 @@ Template.lobbyScreen.events({
 
     'click .start-game'() {
         const id = Template.instance().id.get();
-        methods.startGame.call({ id }, function(err, res) {
-            if (err) {
-                messages.error("Couldn't start game: " + err);
-            } else {
-                messages.info("Game started!");
-            }
-        });
+        methods.startGame.call({ id }, messages.methodCallback("Start Game"));
     },
 });
 

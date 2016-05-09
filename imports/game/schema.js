@@ -17,11 +17,11 @@ export const turn = new SimpleSchema({
         type: Object,
     },
     'clue.word': {
-        label: "Word",
+        label: "Clue Word",
         type: String,
     },
     'clue.number': {
-        label: "Number",
+        label: "Clue Number",
         type: Number,
     },
 
@@ -59,7 +59,7 @@ export const round = new SimpleSchema({
         type: String,
     },
     'board.$.$.colour': { // spymaster secret
-        label: "Word",
+        label: "Allegiance",
         type: String,
     },
     'board.$.$.coveringColour': {
@@ -71,6 +71,7 @@ export const round = new SimpleSchema({
     turn: {
         label: "Current Turn",
         type: turn,
+        optional: true,
     }
 });
 

@@ -25,10 +25,17 @@ Template.gameScreen.helpers({
     doc() {
         return Template.instance().doc.get();
     },
+
+    canStartRound() {
+        const game = Template.instance().doc.get();
+        return !game.round;
+    }
 });
 
 Template.gameScreen.events({
-    'click .something'(event, template) {
+    'click .start-round'(event, template) {
+        const id = template.id.get();
+        methods.startRound.call({ id }, messages.methodCallback("Start Round"));
     },
 });
 
