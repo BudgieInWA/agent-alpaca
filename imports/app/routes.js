@@ -21,12 +21,12 @@ FlowRouter.route('/', {
 
 FlowRouter.route('/lobby/list', {
     action(params, queryParams) {
-        renderScreen('lobbyListScreen');
+        renderScreen(lobbyScreens.list);
     }
 });
 
 FlowRouter.route('/lobby/:id', {
     action(params, queryParams) {
-        renderScreen('lobbyScreen');
+        renderScreen(lobbyScreens.view);
     }
 });

@@ -1,7 +1,4 @@
 // Load templates.
-import templates from './templates.js';
+import './templates.js';
+import './schema.js';
 
-export * from './common.js';
-export {
-    templates,
-};

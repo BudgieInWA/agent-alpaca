@@ -2,17 +2,19 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 export default new SimpleSchema({
     ownerId: {
-        type: String,
         label: "Owner",
+        type: String,
     },
 
     userIds: {
-        type: [String],
         label: "Players",
+        type: [String],
+        defaultValue: [],
     },
 
     gameId: {
-        type: String,
         label: "Games",
+        type: String,
+        optional: true,
     },
 })
