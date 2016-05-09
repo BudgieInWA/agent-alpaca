@@ -21,6 +21,13 @@
                 {{/each}}
             </ul>
 
+            {{#if canJoin}}
+                <button class="join-lobby">Join Lobby!</button>
+            {{/if}}
+            {{#if canLeave}}
+                <button class="leave-lobby">Leave Lobby</button>
+            {{/if}}
+
             <h2>Game</h2>
             {{#if gameId}}
                 {{> gameReference gameId}}

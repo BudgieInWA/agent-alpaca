@@ -23,6 +23,6 @@ export default {
     },
 
     fancyNoun({ letterCase = 'lower' }) {
-        return this.adjective(letterCase) + " " + this.noun(letterCase);
+        return this.adjective({ letterCase }) + " " + this.noun({ letterCase });
     },
 }
