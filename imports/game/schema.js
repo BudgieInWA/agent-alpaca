@@ -1,6 +1,17 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-export const turn = new SimpleSchema({
+export const clueSchema = new SimpleSchema({
+    word: {
+        label: "Word",
+        type: String,
+    },
+    number: {
+        label: "Number",
+        type: Number,
+    },
+});
+
+export const turnSchema = new SimpleSchema({
     number: {
         label: "Turn #",
         type: Number,
@@ -14,16 +25,8 @@ export const turn = new SimpleSchema({
 
     clue: {
         label: "Current Clue",
-        type: Object,
+        type: clueSchema,
         optional: true,
-    },
-    'clue.word': {
-        label: "Clue Word",
-        type: String,
-    },
-    'clue.number': {
-        label: "Clue Number",
-        type: Number,
     },
 
     guessesRemaining: {
@@ -72,7 +75,7 @@ export const round = new SimpleSchema({
 
     turn: {
         label: "Current Turn",
-        type: turn,
+        type: turnSchema,
         optional: true,
     }
 });

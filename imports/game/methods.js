@@ -5,6 +5,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { simpleSchemaMixin as SimpleSchemaMixin } from 'meteor/rlivingston:simple-schema-mixin';
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin';
 
+import { clueSchema } from './schema.js'
 import Games from './collection.js';
 
 let things;
@@ -93,14 +94,21 @@ export default {
             const game = Games.findOne(id);
             const team = checkInGame(game, this.userId);
 
+            if (!game.round) {
+                throw new Meteor.Error('not-in-round', "Must be in a round to move.");
+            }
+
             const turn = {
                 number: 1,
                 team: 'red',
             };
-
             if (game.round.turn) {
                 if (game.round.turn.team !== team) {
                     throw new Meteor.Error('not-your-turn', "Must be your turn to move.");
+                }
+                if (!game.round.turn.clue) {
+                    throw new Meteor.Error('not-your-turn',
+                        "Cannot end turn before a clue is given.");
                 }
 
                 turn.number = game.round.turn.number + 1;
@@ -109,5 +117,38 @@ export default {
 
             Games.update(id, { $set: { 'round.turn': turn } });
         },
+    }),
+
+    giveClue: new ValidatedMethod({
+        name: 'game.giveClue',
+        mixins: [SimpleSchemaMixin, LoggedInMixin],
+        checkLoggedInError: {
+            error: 'not-logged-in',
+            message: "Must be logged in to give a clue.",
+        },
+        schema: {
+            id: { type: String },
+            clue: { type: clueSchema },
+        },
+        run: function ({ id, clue } ) {
+            const game = Games.findOne(id);
+            const team = checkInGame(game, this.userId);
+
+            if (!game.round) {
+                throw new Meteor.Error('not-in-round', "Must be in a round to move.");
+            }
+            if (!game.round.turn || game.round.turn.team !== team) {
+                throw new Meteor.Error('not-your-turn', "Must be your turn to move.");
+            }
+            if (!game.round.spymasters[team] === this.userId) {
+                throw new Meteor.Error('not-spymaster', "Must be Spymaster to give a clue.");
+            }
+            if (game.round.turn.clue) {
+                throw new Meteor.Error('clue-already-given',
+                    "Cannot give more than one clue a turn.");
+            }
+
+            return Games.update(id, { $set: { 'round.turn.clue': clue } });
+        }
     }),
 }

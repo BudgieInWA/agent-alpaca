@@ -39,12 +39,22 @@ Template.gameScreen.helpers({
         return !game.round;
     },
 
-    canStartTurn() {
+    canNextTurn() {
         const game = Template.instance().doc.get();
+        const team = Template.instance().team.get();
         if (!game.round) return false;
         if (!game.round.turn) return true;
-        if (game.round.turn.team)
-        return !game.round;
+        if (!game.round.turn.clue) return false;
+        return game.round.turn.team === team;
+    },
+
+    canGiveClue() {
+        const game = Template.instance().doc.get();
+        const team = Template.instance().team.get();
+        if (!game.round) return false;
+        if (!game.round.turn) return false;
+        if (game.round.turn.team !== team) return false;
+        return game.round.spymasters[team] === Meteor.userId();
     }
 });
 
@@ -58,6 +68,14 @@ Template.gameScreen.events({
         const id = template.id.get();
         methods.nextTurn.call({ id }, messages.methodCallback("Next Turn"));
     },
+
+    'submit .form-clue'(event, template) {
+        const form = event.currentTarget;
+        const id = template.id.get();
+        const vals = $(form).serializeArray();
+        const clue = _.fromPairs(_.map(vals, o => [o.name, o.value])); // Names are unique.
+        methods.giveClue.call({ id, clue }, messages.methodCallback("Give Clue"));
+    }
 });
 
 Template.gameReference.onCreated(function () {

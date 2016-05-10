@@ -23,3 +23,18 @@ Meteor.publish('game.details', function(id) {
         { fields: { 'round.board.colour': 0 } }
     );
 });
+
+Meteor.publish('game.details.spymaster', function(id) {
+    check(id, String);
+
+    return Games.find(
+        {
+            _id: id,
+            $or: [
+                { 'spymasters.red' : this.userId },
+                { 'spymasters.blue': this.userId },
+            ],
+        },
+        { fields: { 'round.board.colour': 1 } }
+    );
+});

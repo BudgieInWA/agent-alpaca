@@ -58,14 +58,22 @@
                         Remaining Guesses: {{round.turn.remainingGuesses}}
                     {{else}}
                         {{#if canGiveClue}}
-                            TODO box for clue
+                            <form class="form-clue">
+                                <label for="game-{{id}}-round.turn.clue.word">Word</label>
+                                <input name="word" type="text"
+                                       id="game-{{id}}-round.turn.clue.word">
+                                <label for="game-{{id}}-round.turn.clue.word">Number</label>
+                                <input name="number" type="number"
+                                       id="game-{{id}}-round.turn.clue.number">
+                                <button type="submit">Give Clue</button>
+                            </form>
                         {{else}}
                             Waiting for clue...
                         {{/if}}
                     {{/if}}
                 {{/if}}
 
-                {{#if canStartTurn}}
+                {{#if canNextTurn}}
                     <button class="next-turn">Next Turn</button>
                 {{/if}}
 
