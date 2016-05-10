@@ -32,7 +32,7 @@ export default {
                 ownerId: this.userId,
                 name,
                 userIds: [this.userId],
-                public: true,
+                isPublic: true,
             });
         }
     }),

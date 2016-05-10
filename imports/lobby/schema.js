@@ -11,7 +11,7 @@ export default new SimpleSchema({
         type: String,
     },
 
-    public: {
+    isPublic: {
         label: "Public?",
         type: Boolean,
     },

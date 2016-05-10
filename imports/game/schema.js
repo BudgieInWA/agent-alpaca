@@ -36,10 +36,15 @@ export const turnSchema = new SimpleSchema({
     },
 });
 
-export const round = new SimpleSchema({
+export const roundSchema = new SimpleSchema({
     number: {
         label: "Round #",
         type: Number,
+    },
+    isEnded: {
+        label: "Ended?",
+        type: Boolean,
+        defaultValue: false,
     },
 
     spymasters: {
@@ -55,19 +60,19 @@ export const round = new SimpleSchema({
         type: String,
     },
 
-    board: {
-        label: "Board",
-        type: [[Object]],
+    cards: {
+        label: "Cards",
+        type: [Object],
     },
-    'board.$.$.word': {
+    'cards.$.word': {
         label: "Word",
         type: String,
     },
-    'board.$.$.colour': { // spymaster secret
+    'cards.$.colour': { // spymaster secret
         label: "Allegiance",
         type: String,
     },
-    'board.$.$.coveringColour': {
+    'cards.$.coveringColour': {
         label: "Covering Colour",
         type: String,
         optional: true,
@@ -100,9 +105,25 @@ export default new SimpleSchema({
         type: [String],
     },
 
+    scores: {
+        label: "Scores",
+        type: Object,
+        defaultValue: {'red': 0, 'blue': 0},
+    },
+    'scores.red': {
+        label: "Red Score",
+        type: Number,
+        min: 0,
+    },
+    'scores.blue': {
+        label: "Blue Score",
+        type: Number,
+        min: 0,
+    },
+
     round: {
         label: "Current Round",
-        type: round,
+        type: roundSchema,
         optional: true,
     }
 })

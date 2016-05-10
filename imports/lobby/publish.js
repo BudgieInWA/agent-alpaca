@@ -16,7 +16,7 @@ Meteor.publish('lobby.details', function(id) {
 
 Meteor.publish('lobby.list.public', function() {
     return Lobbies.find(
-        { public: true },
+        { isPublic: true },
         {
             fields: {
                 name: 1,

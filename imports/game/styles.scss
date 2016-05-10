@@ -1,0 +1,19 @@
+.spymaster {
+	font-weight: bold;
+}
+.spymaster:before {
+	content: "spymaster ";
+}
+
+.cards {
+	overflow: hidden; // Clearfix.
+}
+.card {
+	float: left;
+	width: 8em;
+	height: 3em;
+	margin: 0.5em;
+	border: 1px solid grey;
+
+	text-align: center;
+}

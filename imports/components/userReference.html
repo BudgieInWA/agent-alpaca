@@ -1,6 +1,6 @@
 <template name="userReference">
     {{#if Template.subscriptionsReady}}
-        <span class="user-name">
+        <span class="user-name {{if_Then_ isMe "me"}}">
             {{doc._id}}
         </span>
     {{else}}

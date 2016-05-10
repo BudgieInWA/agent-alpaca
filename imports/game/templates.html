@@ -2,7 +2,7 @@
     {{#if Template.subscriptionsReady}}
         {{#with doc}}
             <header>
-                <h1>Game {{name}}</h1>
+                <h1>{{name}}</h1>
             </header>
 
             <h2>Players</h2>
@@ -10,7 +10,7 @@
             <h3>Red Team</h3>
             <ul>
                 {{#each userId in players.red}}
-                    <li>
+                    <li class="{{if_Then_ (isSpymaster userId) "spymaster"}}">
                         {{> userReference id=userId}}
                     </li>
                 {{/each}}
@@ -19,43 +19,35 @@
             <h3>Blue Team</h3>
             <ul>
                 {{#each userId in players.blue}}
-                    <li>
+                    <li class="{{if_Then_ (isSpymaster userId) "spymaster"}}">
                         {{> userReference id=userId}}
                     </li>
                 {{/each}}
             </ul>
 
 
-            <h2>Round {{round.number}}</h2>
             {{#if round}}
-                <h3>Spymasters</h3>
-                <dl>
-                    <dt>Red</dt>
-                    <dd>{{> userReference id=round.spymasters.red}}</dd>
-                    <dt>Blue</dt>
-                    <dd>{{> userReference id=round.spymasters.blue}}</dd>
-                </dl>
-
-                <h3>Board</h3>
-                <table>
-                    {{#each row in round.board}}
-                        <tr>
-                            {{#each card in row}}
-                                <td>
-                                    {{card.colour}}
-                                    agent
-                                    {{card.word}}
-                                </td>
-                            {{/each}}
-                        </tr>
+                <h2>
+                    Round {{round.number}}
+                    {{#if round.isEnded}}
+                        (ended)
+                    {{/if}}
+                </h2>
+                <section class="cards">
+                    {{#each card in round.cards}}
+                        <div class="card" data-index="{{@index}}">
+                            {{card.word}}
+                            {{card.colour}}
+                            <div class="covering">{{card.coveringColour}}</div>
+                        </div>
                     {{/each}}
-                </table>
+                </section>
 
                 <h3>Turn {{round.turn.number}} ({{round.turn.team}})</h3>
                 {{#if round.turn}}
                     {{#if round.turn.clue}}
                         Clue: {{round.turn.clue.word}} {{round.turn.clue.number}}
-                        Remaining Guesses: {{round.turn.remainingGuesses}}
+                        Remaining Guesses: {{round.turn.guessesRemaining}}
                     {{else}}
                         {{#if canGiveClue}}
                             <form class="form-clue">

@@ -20,7 +20,7 @@ Meteor.publish('game.details', function(id) {
                 { 'players.blue': this.userId },
             ],
         },
-        { fields: { 'round.board.colour': 0 } }
+        { fields: { 'round.cards.colour': 0 } }
     );
 });
 
@@ -35,6 +35,6 @@ Meteor.publish('game.details.spymaster', function(id) {
                 { 'spymasters.blue': this.userId },
             ],
         },
-        { fields: { 'round.board.colour': 1 } }
+        { fields: { 'round.cards.colour': 1 } }
     );
 });

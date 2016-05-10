@@ -8,6 +8,7 @@ import Games from './collection.js';
 import methods from './methods.js';
 
 import './templates.html';
+import './styles.scss';
 
 Template.gameScreen.onCreated(function () {
     this.id = new ReactiveVar(null);
@@ -19,6 +20,7 @@ Template.gameScreen.onCreated(function () {
     });
     this.autorun(() => {
         this.doc.set(Games.findOne(this.id.get()));
+        console.log(this.doc.get());
     });
     this.autorun(() => {
         const game = Games.findOne(this.id.get(), { fields: { players: 1 } });
@@ -34,15 +36,21 @@ Template.gameScreen.helpers({
         return Template.instance().doc.get();
     },
 
+    isSpymaster(userId) {
+        const game = Template.instance().doc.get();
+        return game.round && game.round.spymasters &&
+            (game.round.spymasters.red === userId || game.round.spymasters.blue === userId);
+    },
+
     canStartRound() {
         const game = Template.instance().doc.get();
-        return !game.round;
+        return !game.round || game.round.isEnded;
     },
 
     canNextTurn() {
         const game = Template.instance().doc.get();
         const team = Template.instance().team.get();
-        if (!game.round) return false;
+        if (!game.round || game.round.isEnded) return false;
         if (!game.round.turn) return true;
         if (!game.round.turn.clue) return false;
         return game.round.turn.team === team;
@@ -51,7 +59,7 @@ Template.gameScreen.helpers({
     canGiveClue() {
         const game = Template.instance().doc.get();
         const team = Template.instance().team.get();
-        if (!game.round) return false;
+        if (!game.round || game.round.isEnded) return false;
         if (!game.round.turn) return false;
         if (game.round.turn.team !== team) return false;
         return game.round.spymasters[team] === Meteor.userId();
@@ -70,12 +78,19 @@ Template.gameScreen.events({
     },
 
     'submit .form-clue'(event, template) {
+        event.preventDefault();
         const form = event.currentTarget;
         const id = template.id.get();
         const vals = $(form).serializeArray();
         const clue = _.fromPairs(_.map(vals, o => [o.name, o.value])); // Names are unique.
         methods.giveClue.call({ id, clue }, messages.methodCallback("Give Clue"));
-    }
+    },
+
+    'click .card'(event, template) {
+        const id = template.id.get();
+        const cardIndex = event.currentTarget.dataset.index;
+        methods.makeGuess.call({ id, cardIndex }, messages.methodCallback("Make Guess"));
+    },
 });
 
 Template.gameReference.onCreated(function () {

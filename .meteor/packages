@@ -22,6 +22,7 @@ tracker                 # Meteor's client-side reactive programming library
 
 # UI
 blaze-html-templates    # Compile .html files into Meteor Blaze views
+fourseven:scss
 mobile-experience       # Packages for a great mobile UX
 kadira:flow-router
 kadira:blaze-layout
