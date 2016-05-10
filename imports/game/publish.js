@@ -31,10 +31,12 @@ Meteor.publish('game.details.spymaster', function(id) {
         {
             _id: id,
             $or: [
-                { 'spymasters.red' : this.userId },
-                { 'spymasters.blue': this.userId },
+                { 'round.spymasters.red' : this.userId },
+                { 'round.spymasters.blue': this.userId },
             ],
-        },
-        { fields: { 'round.cards.colour': 1 } }
+        }
+        // If Meteor weren't broken, we'd leave this in and it would be merged with the rest of
+        // the fields:
+        //{ fields: { 'round.cards.colour': 1 } }
     );
 });

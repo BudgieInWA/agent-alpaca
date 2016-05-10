@@ -16,6 +16,8 @@ Template.gameScreen.onCreated(function () {
     this.team = new ReactiveVar(null);
     this.autorun(() => {
         this.id.set(FlowRouter.getParam('id'));
+        this.subscribe('game.details.spymaster', this.id.get()); // This will provide the full
+        // doc when needed. The doc from the other sub might replace it sometimes though.
         this.subscribe('game.details', this.id.get());
     });
     this.autorun(() => {
