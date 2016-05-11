@@ -9,7 +9,7 @@
                 <section class="players">
                     <h2>Players</h2>
 
-                    <div class="red-team">
+                    <div class="red team">
                         <h3>Red Team</h3>
                         <ul>
                             {{#each userId in players.red}}
@@ -20,7 +20,7 @@
                         </ul>
                     </div>
 
-                    <div class="blue-team">
+                    <div class="blue team">
                         <h3>Blue Team</h3>
                         <ul>
                             {{#each userId in players.blue}}
@@ -33,13 +33,75 @@
                 </section>
 
                 {{#if round}}
-                    <section class="round">
+                    <section class="round {{if_Then_ round.isEnded "ended"}}">
                         <h2>
                             Round {{round.number}}
                             {{#if round.isEnded}}
                                 (ended)
                             {{/if}}
                         </h2>
+
+                        {{#if round.turn}}
+                            <section class="turn {{round.turn.team}}">
+                                <span class="number">Turn #{{round.turn.number}}</span>
+                                <h3>{{round.turn.team}} Team's Turn</h3>
+                                {{#if round.turn.clue}}
+                                    <div class="clue">
+                                        <div class="word">
+                                            <label for="game-{{id}}-round.turn.clue.word">Clue</label>
+                                            <span id="game-{{id}}-round.turn.clue.word">
+                                                {{round.turn.clue.word}}
+                                            </span>
+                                        </div>
+                                        <div class="number">
+                                            <label for="game-{{id}}-round.turn.clue.number">Number</label>
+                                            <span id="game-{{id}}-round.turn.clue.number">
+                                                {{round.turn.clue.number}}
+                                            </span>
+                                        </div>
+                                        <div class="remaining">
+                                            <label for="game-{{id}}-round.turn.remainingGuesses">
+                                                Remaining Guesses
+                                            </label>
+                                            <span id="game-{{id}}-round.turn.remainingGuesses">
+                                                {{round.turn.guessesRemaining}}
+                                            </span>
+                                            {{#if canNextTurn}}
+                                                <button class="next-turn">End Turn</button>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                {{else}}
+                                    {{#if canGiveClue}}
+                                        <form class="clue-form">
+                                            <div class="word">
+                                                <label for="game-{{id}}-round.turn.clue.word">Word</label>
+                                                <input name="word" type="text"
+                                                       id="game-{{id}}-round.turn.clue.word">
+                                            </div>
+                                            <div class="number">
+                                                <label for="game-{{id}}-round.turn.clue.word">Number</label>
+                                                <input name="number" type="number"
+                                                       id="game-{{id}}-round.turn.clue.number">
+                                            </div>
+                                            <div class="buttons">
+                                                <button type="submit">Give Clue</button>
+                                            </div>
+                                        </form>
+                                    {{else}}
+                                        <div class="no-clue">
+                                            Waiting for a clue...
+                                        </div>
+                                    {{/if}}
+                                {{/if}}
+                            </section>
+                        {{else}}
+                            <section class="no-turn">
+                                {{#if canNextTurn}}
+                                    <button class="next-turn">Start First Turn</button>
+                                {{/if}}
+                            </section>
+                        {{/if}}
 
                         <section class="cards">
                             {{#each card in round.cards}}
@@ -51,64 +113,16 @@
                             {{/each}}
                         </section>
 
-                        {{#if round.turn}}
-                            <section class="turn">
-                                <h3>Turn {{round.turn.number}} ({{round.turn.team}})</h3>
-                                {{#if round.turn.clue}}
-                                    <div class="clue">
-                                        <label for="game-{{id}}-round.turn.clue.word">Clue</label>
-                                        <span id="game-{{id}}-round.turn.clue.word">
-                                            {{round.turn.clue.word}}
-                                        </span>
-                                        <label for="game-{{id}}-round.turn.clue.number">Number</label>
-                                        <span id="game-{{id}}-round.turn.clue.number">
-                                            {{round.turn.clue.number}}
-                                        </span>
-                                        <label for="game-{{id}}-round.turn.remainingGuesses">
-                                            Remaining Guesses
-                                        </label>
-                                        <span id="game-{{id}}-round.turn.remainingGuesses">
-                                            {{round.turn.guessesRemaining}}
-                                        </span>
-                                    </div>
-                                {{else}}
-                                    {{#if canGiveClue}}
-                                        <form class="clue-form">
-                                            <label for="game-{{id}}-round.turn.clue.word">Word</label>
-                                            <input name="word" type="text"
-                                                   id="game-{{id}}-round.turn.clue.word">
-                                            <label for="game-{{id}}-round.turn.clue.word">Number</label>
-                                            <input name="number" type="number"
-                                                   id="game-{{id}}-round.turn.clue.number">
-                                            <button type="submit">Give Clue</button>
-                                        </form>
-                                    {{else}}
-                                        <div class="waiting-for-clue">
-                                            Waiting for a clue...
-                                        </div>
-                                    {{/if}}
-                                {{/if}}
-
-                                {{#if canNextTurn}}
-                                    <button class="next-turn">End Turn</button>
-                                {{/if}}
-                            </section>
-                        {{else}}
-                            {{#if canNextTurn}}
-                                <button class="next-turn">Start First Turn</button>
-                            {{/if}}
-
-                        {{/if}}
-
-
                         {{#if canStartRound}}
                             <button class="start-round">Start Next Round</button>
                         {{/if}}
                     </section>
                 {{else}}
-                    {{#if canStartRound}}
-                        <button class="start-round">Start Playing</button>
-                    {{/if}}
+                    <section class="no-round">
+                        {{#if canStartRound}}
+                            <button class="start-round">Start Playing</button>
+                        {{/if}}
+                    </section>
                 {{/if}}
             </article>
         {{else}}

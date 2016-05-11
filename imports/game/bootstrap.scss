@@ -1,3 +1,131 @@
+// Components.
+
+// Red team panel.
+.panel-red {
+	@extend .panel-danger; // TODO
+}
+.panel-blue {
+	@extend .panel-primary; // TODO
+}
+
+
+// Layout
+article.game {
+}
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+	article.game > section.players {
+		@include make-row();
+	}
+	article.game > section.players > * {
+		@include make-xs-column(12);
+	}
+	article.game > section.players > .team {
+		@include make-sm-column(6);
+	}
+}
+
+@media (min-width: $screen-md-min) {
+	$sidebar-width: 300px;
+	article.game > section.players {
+		float: left;
+		width: $sidebar-width;
+	}
+	article.game > section.round,
+	article.game > section.no-round {
+		margin-left: $sidebar-width + $grid-gutter-width;
+	}
+}
+
+
+article.game > section.no-round {
+	@extend .blank-slate;
+}
+
+section.no-turn {
+	@extend .blank-slate;
+}
+section.turn {
+	position: relative;
+}
+section.turn.blue {
+	@extend .panel;
+	@extend .panel-blue;
+}
+section.turn.red {
+	@extend .panel;
+	@extend .panel-red;
+}
+section.turn > .number {
+	position: absolute;
+	right: $padding-base-horizontal;
+	top: $padding-base-vertical;
+	color: $gray-light;
+}
+section.turn > h3 {
+	@extend .panel-heading;
+}
+section.turn > .clue,
+section.turn > .no-clue,
+section.turn > .clue-form {
+	@extend .panel-body;
+}
+section.turn > .clue::after,
+section.turn > .no-clue::after,
+section.turn > .clue-form::after {
+	display: none; // Undo bad, unneeded clearfix.
+}
+
+.clue > .word,
+.clue-form > .word {
+	float: left;
+	text-align: left;
+	width: 70%;
+}
+.clue > .number,
+.clue-form > .number {
+	float: right;
+	text-align: right;
+	width: 30%;
+}
+.clue > .word > span,
+.clue > .number > span {
+	display: block;
+	font-size: 300%;
+	line-height: 1;
+	font-weight: bold;
+}
+.clue > .remaining {
+	clear: right;
+	text-align: right;
+
+	span {
+		font-size: 150%;
+		font-weight: bold;
+	}
+}
+
+.clue-form {
+	> * {
+		@extend .form-group;
+	}
+
+	input {
+		@extend .form-control;
+		@extend .input-lg;
+	}
+
+	.buttons {
+		clear: right;
+		margin-bottom: 0;
+	}
+	button {
+		@extend .btn;
+		@extend .btn-primary;
+		@extend .btn-block;
+	}
+}
+
 .spymaster {
 	font-weight: bold;
 }
@@ -16,4 +144,11 @@
 	border: 1px solid grey;
 
 	text-align: center;
+}
+
+button.start-round,
+button.next-turn {
+	@extend .btn;
+	@extend .btn-lg;
+	@extend .btn-primary;
 }
