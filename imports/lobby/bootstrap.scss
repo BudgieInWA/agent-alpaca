@@ -1,0 +1,45 @@
+article.lobby-list {
+	.create-lobby {
+		@extend .btn;
+		@extend .btn-primary;
+	}
+
+	.lobbies {
+		@extend .list-group;
+		> a {
+			@extend .list-group-item;
+		}
+	}
+
+	.no-lobbies {
+		@extend .blank-slate;
+	}
+}
+
+article.lobby {
+	.join-lobby {
+		@extend .btn;
+		@extend .btn-success;
+	}
+	.leave-lobby {
+		@extend .btn;
+		@extend .btn-warning;
+	}
+
+	.players {
+		@extend .panel;
+		> h2 {
+			@extend .panel-title;
+		}
+		> ul {
+			@extend .list-group;
+			> li {
+				@extend .list-group-item;
+			}
+		}
+	}
+
+	.no-lobbies {
+		@extend .blank-slate;
+	}
+}

@@ -1,69 +1,76 @@
 <template name="lobbyScreen">
     {{#if Template.subscriptionsReady}}
-        {{#with doc}}
-            <header>
-                <h1>Lobby {{name}}</h1>
+        <article class="lobby">
+            {{#with doc}}
+                <header>
+                    <h1>Lobby for {{name}}</h1>
+                </header>
 
-                owner: {{> userReference id=ownerId}}
-            </header>
+                <section class="players">
+                    <h2>Players</h2>
+                    <ul>
+                        {{#each userId in userIds}}
+                            <li>
+                                {{> userReference id=userId}}
+                            </li>
+                        {{else}}
+                            <li class="empty-list">
+                                No Users :(
+                            </li>
+                        {{/each}}
+                    </ul>
+                </section>
 
-            <h2>Players</h2>
-            <ul>
-                {{#each userId in userIds}}
-                    <li>
-                        {{> userReference id=userId}}
-                    </li>
-                {{else}}
-                    <li class="empty-list">
-                        No Users :(
-                    </li>
-                {{/each}}
-            </ul>
+                {{#if canJoin}}
+                    <button class="join-lobby">Join Lobby!</button>
+                {{/if}}
+                {{#if canLeave}}
+                    <button class="leave-lobby">Leave Lobby</button>
+                {{/if}}
 
-            {{#if canJoin}}
-                <button class="join-lobby">Join Lobby!</button>
-            {{/if}}
-            {{#if canLeave}}
-                <button class="leave-lobby">Leave Lobby</button>
-            {{/if}}
-
-            <h2>Game</h2>
-            {{#if gameId}}
-                {{> gameReference id=gameId}}
+                <section class="game">
+                    <h2>Game</h2>
+                    {{#if gameId}}
+                        {{> gameReference id=gameId}}
+                    {{else}}
+                        <button class="start-game" {{if_Then_ reasonsNotToStart "disabled"}}>
+                            Start Game
+                        </button>
+                        {{reasonsNotToStart}}
+                    {{/if}}
+                </section>
             {{else}}
-                <button class="start-game" {{if_Then_ reasonsNotToStart "disabled"}}>
-                    Start Game
-                </button>
-                {{reasonsNotToStart}}
-            {{/if}}
-        {{else}}
-            unknown
-        {{/with}}
+                unknown
+            {{/with}}
+        </article>
     {{else}}
         {{> inlineSpinner}}
     {{/if}}
 </template>
 
 <template name="lobbyListScreen">
-    <header>
-        <h1>Public Lobbies</h1>
-    </header>
+    <article class="lobby-list">
+        <header>
+            <h1>Public Lobbies</h1>
+        </header>
 
-    <button class="create-lobby">New Lobby</button>
-
-    {{#if Template.subscriptionsReady}}
-        <ul>
-            {{#each lobby in lobbies}}
-                <li>
-                    <a href="/lobby/{{lobby._id}}">{{lobby.name}}</a>
-                </li>
+        {{#if Template.subscriptionsReady}}
+            {{#if lobbies}}
+                <div class="lobbies">
+                    {{#each lobby in lobbies}}
+                        <a href="/lobby/{{lobby._id}}">{{lobby.name}}</a>
+                    {{/each}}
+                </div>
             {{else}}
-                <li class="empty-list">
+                <div class="no-lobbies">
                     No Lobbies :( Create one your self!
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        {{> inlineSpinner}}
-    {{/if}}
+                </div>
+            {{/if}}
+
+            <button class="create-lobby">New Lobby</button>
+        {{else}}
+            {{> inlineSpinner}}
+        {{/if}}
+
+    </article>
 </template>
