@@ -25,7 +25,7 @@ Template.gameScreen.onCreated(function () {
     });
     this.autorun(() => {
         const game = Games.findOne(this.id.get(), { fields: { players: 1 } });
-        if (game) {
+        if (game && game.players) {
             if (_.includes(game.players.red,  Meteor.userId())) this.team.set('red');
             if (_.includes(game.players.blue, Meteor.userId())) this.team.set('blue');
         }
@@ -78,7 +78,7 @@ Template.gameScreen.events({
         methods.nextTurn.call({ id }, messages.methodCallback("Next Turn"));
     },
 
-    'submit .form-clue'(event, template) {
+    'submit .clue-form'(event, template) {
         event.preventDefault();
         const form = event.currentTarget;
         const id = template.id.get();

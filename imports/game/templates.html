@@ -1,80 +1,116 @@
 <template name="gameScreen">
     {{#if Template.subscriptionsReady}}
         {{#with doc}}
-            <header>
-                <h1>{{name}}</h1>
-            </header>
+            <article class="game">
+                <header>
+                    <h1>{{name}}</h1>
+                </header>
 
-            <h2>Players</h2>
+                <section class="players">
+                    <h2>Players</h2>
 
-            <h3>Red Team</h3>
-            <ul>
-                {{#each userId in players.red}}
-                    <li class="{{if_Then_ (isSpymaster userId) "spymaster"}}">
-                        {{> userReference id=userId}}
-                    </li>
-                {{/each}}
-            </ul>
+                    <div class="red-team">
+                        <h3>Red Team</h3>
+                        <ul>
+                            {{#each userId in players.red}}
+                                <li class="{{if_Then_ (isSpymaster userId) "spymaster"}}">
+                                    {{> userReference id=userId}}
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </div>
 
-            <h3>Blue Team</h3>
-            <ul>
-                {{#each userId in players.blue}}
-                    <li class="{{if_Then_ (isSpymaster userId) "spymaster"}}">
-                        {{> userReference id=userId}}
-                    </li>
-                {{/each}}
-            </ul>
-
-
-            {{#if round}}
-                <h2>
-                    Round {{round.number}}
-                    {{#if round.isEnded}}
-                        (ended)
-                    {{/if}}
-                </h2>
-                <section class="cards">
-                    {{#each card in round.cards}}
-                        <div class="card" data-index="{{@index}}">
-                            {{card.word}}
-                            {{card.colour}}
-                            <div class="covering">{{card.coveringColour}}</div>
-                        </div>
-                    {{/each}}
+                    <div class="blue-team">
+                        <h3>Blue Team</h3>
+                        <ul>
+                            {{#each userId in players.blue}}
+                                <li class="{{if_Then_ (isSpymaster userId) "spymaster"}}">
+                                    {{> userReference id=userId}}
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </div>
                 </section>
 
-                <h3>Turn {{round.turn.number}} ({{round.turn.team}})</h3>
-                {{#if round.turn}}
-                    {{#if round.turn.clue}}
-                        Clue: {{round.turn.clue.word}} {{round.turn.clue.number}}
-                        Remaining Guesses: {{round.turn.guessesRemaining}}
-                    {{else}}
-                        {{#if canGiveClue}}
-                            <form class="form-clue">
-                                <label for="game-{{id}}-round.turn.clue.word">Word</label>
-                                <input name="word" type="text"
-                                       id="game-{{id}}-round.turn.clue.word">
-                                <label for="game-{{id}}-round.turn.clue.word">Number</label>
-                                <input name="number" type="number"
-                                       id="game-{{id}}-round.turn.clue.number">
-                                <button type="submit">Give Clue</button>
-                            </form>
+                {{#if round}}
+                    <section class="round">
+                        <h2>
+                            Round {{round.number}}
+                            {{#if round.isEnded}}
+                                (ended)
+                            {{/if}}
+                        </h2>
+
+                        <section class="cards">
+                            {{#each card in round.cards}}
+                                <div class="card" data-index="{{@index}}">
+                                    {{card.word}}
+                                    {{card.colour}}
+                                    <div class="covering">{{card.coveringColour}}</div>
+                                </div>
+                            {{/each}}
+                        </section>
+
+                        {{#if round.turn}}
+                            <section class="turn">
+                                <h3>Turn {{round.turn.number}} ({{round.turn.team}})</h3>
+                                {{#if round.turn.clue}}
+                                    <div class="clue">
+                                        <label for="game-{{id}}-round.turn.clue.word">Clue</label>
+                                        <span id="game-{{id}}-round.turn.clue.word">
+                                            {{round.turn.clue.word}}
+                                        </span>
+                                        <label for="game-{{id}}-round.turn.clue.number">Number</label>
+                                        <span id="game-{{id}}-round.turn.clue.number">
+                                            {{round.turn.clue.number}}
+                                        </span>
+                                        <label for="game-{{id}}-round.turn.remainingGuesses">
+                                            Remaining Guesses
+                                        </label>
+                                        <span id="game-{{id}}-round.turn.remainingGuesses">
+                                            {{round.turn.guessesRemaining}}
+                                        </span>
+                                    </div>
+                                {{else}}
+                                    {{#if canGiveClue}}
+                                        <form class="clue-form">
+                                            <label for="game-{{id}}-round.turn.clue.word">Word</label>
+                                            <input name="word" type="text"
+                                                   id="game-{{id}}-round.turn.clue.word">
+                                            <label for="game-{{id}}-round.turn.clue.word">Number</label>
+                                            <input name="number" type="number"
+                                                   id="game-{{id}}-round.turn.clue.number">
+                                            <button type="submit">Give Clue</button>
+                                        </form>
+                                    {{else}}
+                                        <div class="waiting-for-clue">
+                                            Waiting for a clue...
+                                        </div>
+                                    {{/if}}
+                                {{/if}}
+
+                                {{#if canNextTurn}}
+                                    <button class="next-turn">End Turn</button>
+                                {{/if}}
+                            </section>
                         {{else}}
-                            Waiting for clue...
+                            {{#if canNextTurn}}
+                                <button class="next-turn">Start First Turn</button>
+                            {{/if}}
+
                         {{/if}}
+
+
+                        {{#if canStartRound}}
+                            <button class="start-round">Start Next Round</button>
+                        {{/if}}
+                    </section>
+                {{else}}
+                    {{#if canStartRound}}
+                        <button class="start-round">Start Playing</button>
                     {{/if}}
                 {{/if}}
-
-                {{#if canNextTurn}}
-                    <button class="next-turn">Next Turn</button>
-                {{/if}}
-
-            {{/if}}
-
-            {{#if canStartRound}}
-                <button class="start-round">Start Next Round</button>
-            {{/if}}
-
+            </article>
         {{else}}
             unknown game
         {{/with}}
