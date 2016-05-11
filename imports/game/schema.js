@@ -44,7 +44,6 @@ export const roundSchema = new SimpleSchema({
     isEnded: {
         label: "Ended?",
         type: Boolean,
-        defaultValue: false,
     },
 
     spymasters: {
