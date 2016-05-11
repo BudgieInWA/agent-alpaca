@@ -1,0 +1,60 @@
+html {
+  position: relative;
+  min-height: 100%; // For sticky footer.
+}
+body {
+	padding-top: 70px; // For the fixed navbar.
+	padding-bottom: $footer-height; // For the sticky footer.
+}
+
+
+// Page header.
+body > header {
+	@extend .navbar;
+	@extend .navbar-default;
+	@extend .navbar-fixed-top;
+}
+body > header > nav {
+	@extend .container-fluid;
+}
+#nav-main {
+	@extend .navbar-header;
+
+	.brand {
+		@extend .navbar-brand;
+	}
+}
+#nav-overflow {
+	@extend .collapse;
+	@extend .navbar-collapse;
+
+	ul {
+		@extend .nav;
+		@extend .navbar-nav;
+	}
+}
+
+
+#screen {
+	@extend .container-fluid;
+}
+
+
+// Page footer.
+body > footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: $footer-height;
+}
+body > footer > div {
+	@extend .container-fluid;
+}
+
+
+// Defaults.
+
+#screen button {
+	@extend .btn;
+	@extend .btn-default;
+}

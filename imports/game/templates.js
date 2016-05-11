@@ -8,7 +8,6 @@ import Games from './collection.js';
 import methods from './methods.js';
 
 import './templates.html';
-import './styles.scss';
 
 Template.gameScreen.onCreated(function () {
     this.id = new ReactiveVar(null);

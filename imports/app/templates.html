@@ -3,9 +3,22 @@
 -->
 <template name="app">
     <header>
-        <h1>Agent Alpaca</h1>
-
-        <nav></nav>
+        <nav>
+            <div id="nav-main">
+                <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#nav-overflow">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="brand">Agent Alpaca</a>
+            </div>
+            <div id="nav-overflow">
+                <ul>
+                     <li><a href="/lobby/list">Lobbies</a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
     <section id="screen">
@@ -13,6 +26,8 @@
     </section>
 
     <footer>
-        &copy; Ben Ritter 2016
+        <div>
+            &copy; Ben Ritter 2016
+        </div>
     </footer>
 </template>
