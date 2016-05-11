@@ -43,6 +43,14 @@ Template.gameScreen.helpers({
             (game.round.spymasters.red === userId || game.round.spymasters.blue === userId);
     },
 
+    myTurn() {
+        const game = Template.instance().doc.get();
+        const team = Template.instance().team.get();
+        return game && game.round && game.round.turn &&
+                game.round.turn.team === team;
+
+    },
+
     canStartRound() {
         const game = Template.instance().doc.get();
         return !game.round || game.round.isEnded;
@@ -64,11 +72,21 @@ Template.gameScreen.helpers({
         if (!game.round.turn) return false;
         if (game.round.turn.team !== team) return false;
         return game.round.spymasters[team] === Meteor.userId();
-    }
+    },
+
+    canGuess() {
+        const game = Template.instance().doc.get();
+        const team = Template.instance().team.get();
+        if (!game.round || game.round.isEnded) return false;
+        if (!game.round.turn || game.round.turn.team !== team) return false;
+        if (!game.round.turn.clue) return false;
+        if (game.round.spymasters[team] === Meteor.userId()) return false;
+        return game.round.turn.guessesRemaining >= 0;
+    },
 });
 
 Template.gameScreen.events({
-    'click .start-round'(event, template) {
+    'click .start-round, click .next-round'(event, template) {
         const id = template.id.get();
         methods.startRound.call({ id }, messages.methodCallback("Start Round"));
     },
@@ -87,7 +105,7 @@ Template.gameScreen.events({
         methods.giveClue.call({ id, clue }, messages.methodCallback("Give Clue"));
     },
 
-    'click .card'(event, template) {
+    'click .guess .card'(event, template) {
         const id = template.id.get();
         const cardIndex = event.currentTarget.dataset.index;
         methods.makeGuess.call({ id, cardIndex }, messages.methodCallback("Make Guess"));

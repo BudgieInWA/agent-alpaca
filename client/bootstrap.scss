@@ -7,9 +7,10 @@
 // Theme variables.
 @import "./lumens-variables";
 
-
 // Default variables.
 @import "{}/node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+
+// Mixins.
 @import "{}/node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
 
 // Reset and dependencies

@@ -38,8 +38,49 @@ article.game {
 }
 
 
+section.players > .red.team {
+	@extend .panel;
+	@extend .panel-red;
+}
+section.players > .blue.team {
+	@extend .panel;
+	@extend .panel-blue;
+}
+section.players > .team {
+	> h3 {
+		@extend .panel-heading;
+		@extend h4;
+
+		margin: 0;
+	}
+	> ul {
+		@extend .list-group;
+
+		> li {
+			@extend .list-group-item;
+		}
+	}
+}
+
+
+
+
 article.game > section.no-round {
 	@extend .blank-slate;
+}
+
+section.round > .round-ended {
+	@extend .alert;
+	@extend .alert-success;
+	overflow: hidden; // Clearfix.
+
+	button {
+		float: right;
+	}
+}
+.next-round {
+	@extend .btn;
+	@extend .btn-primary;
 }
 
 section.no-turn {
@@ -64,45 +105,60 @@ section.turn > .number {
 }
 section.turn > h3 {
 	@extend .panel-heading;
+	@extend h4;
+
+	margin: 0;
 }
 section.turn > .clue,
 section.turn > .no-clue,
 section.turn > .clue-form {
 	@extend .panel-body;
+
+	overflow: hidden;
 }
 section.turn > .clue::after,
+section.turn > .clue::before,
 section.turn > .no-clue::after,
 section.turn > .clue-form::after {
-	display: none; // Undo bad, unneeded clearfix.
+	content: ""; // An unneeded clearfix adds this in.
 }
 
-.clue > .word,
+.guess-instruction {
+	@extend .alert;
+	@extend .alert-success;
+	overflow: hidden;
+
+	button {
+		float: right;
+	}
+}
+
 .clue-form > .word {
 	float: left;
 	text-align: left;
 	width: 70%;
 }
-.clue > .number,
 .clue-form > .number {
-	float: right;
+	float: left;
 	text-align: right;
 	width: 30%;
 }
+.clue {
+	display: flex;
+	justify-content: space-around;
+}
+.clue > .word,
+.clue > .number,
+.clue > .remaining {
+	text-align: center;
+}
 .clue > .word > span,
+.clue > .remaining > span,
 .clue > .number > span {
 	display: block;
 	font-size: 300%;
 	line-height: 1;
 	font-weight: bold;
-}
-.clue > .remaining {
-	clear: right;
-	text-align: right;
-
-	span {
-		font-size: 150%;
-		font-weight: bold;
-	}
 }
 
 .clue-form {
@@ -121,30 +177,65 @@ section.turn > .clue-form::after {
 	}
 	button {
 		@extend .btn;
-		@extend .btn-primary;
+		@extend .btn-success;
 		@extend .btn-block;
 	}
 }
 
-.spymaster {
-	font-weight: bold;
-}
-.spymaster:before {
-	content: "spymaster ";
-}
-
 .cards {
-	overflow: hidden; // Clearfix.
-}
-.card {
-	float: left;
-	width: 8em;
-	height: 3em;
-	margin: 0.5em;
-	border: 1px solid grey;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: flex-start;
 
-	text-align: center;
+	padding: 0 $panel-body-padding $panel-body-padding 0;
 }
+$card-radius: 2px;
+.card {
+	position: relative;
+	width: 8em;
+	height: 5em;
+	margin: $panel-body-padding 0 0 $panel-body-padding;
+
+	background-color: #eee;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+	transition: box-shadow .25s;
+	border-radius: $card-radius;
+
+	color: black;
+
+	@include center-child();
+	> span {
+		font-size: 130%;
+	}
+}
+.cards.guess .card:not(.covered):hover {
+	box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+	cursor: pointer;
+}
+
+.card.red {   background-color: $team-red-bg; }
+.card.blue {  background-color: $team-blue-bg; }
+.card.grey {  background-color: $team-grey-bg; }
+.card.black { background-color: $team-black-bg; }
+.card > .covering {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	border-radius: $card-radius;
+
+	@include center-child();
+	span {
+		transform:rotate(-20deg);
+	}
+}
+.card > .covering.red   { background: rgba($team-red,   0.7); }
+.card > .covering.blue  { background: rgba($team-blue,  0.7); }
+.card > .covering.grey  { background: rgba($team-grey,  0.7); }
+.card > .covering.black { background: rgba($team-black, 0.7); }
 
 button.start-round,
 button.next-turn {

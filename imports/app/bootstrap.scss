@@ -1,5 +1,11 @@
 // Components.
 
+@mixin center-child() {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .blank-slate {
 	@extend .well;
 	text-align: center;
