@@ -102,7 +102,7 @@
                                     {{#if canNextTurn}}
                                         <button class="next-turn">
                                             {{#if round.turn.guessesRemaining}}
-                                                Give Up
+                                                Pass
                                             {{else}}
                                                 Done
                                             {{/if}}
@@ -113,7 +113,7 @@
                         {{else}}
                             <section class="no-turn">
                                 {{#if canNextTurn}}
-                                    <button class="next-turn">Start First Turn</button>
+                                    <button class="start-turn">Start First Turn</button>
                                 {{/if}}
                             </section>
                         {{/if}}

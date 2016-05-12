@@ -91,7 +91,7 @@ Template.gameScreen.events({
         methods.startRound.call({ id }, messages.methodCallback("Start Round"));
     },
 
-    'click .next-turn'(event, template) {
+    'click .start-turn, click .next-turn'(event, template) {
         const id = template.id.get();
         methods.nextTurn.call({ id }, messages.methodCallback("Next Turn"));
     },
