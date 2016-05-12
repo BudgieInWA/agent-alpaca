@@ -15,10 +15,7 @@ Meteor.publish('game.details', function(id) {
     return Games.find(
         {
             _id: id,
-            $or: [
-                { 'players.red' : this.userId },
-                { 'players.blue': this.userId },
-            ],
+            'teams.playerIds': this.userId,
         },
         { fields: { 'round.cards.colour': 0 } }
     );
@@ -30,13 +27,12 @@ Meteor.publish('game.details.spymaster', function(id) {
     return Games.find(
         {
             _id: id,
-            $or: [
-                { 'round.spymasters.red' : this.userId },
-                { 'round.spymasters.blue': this.userId },
-            ],
+            'round.teams.spymasterId': this.userId,
         }
         // If Meteor weren't broken, we'd leave this in and it would be merged with the rest of
         // the fields:
         //{ fields: { 'round.cards.colour': 1 } }
+        // As it is, we include all fields and hope that docs from this sub are used over docs from
+        // the public sub. See https://github.com/meteor/meteor/issues/3764
     );
 });

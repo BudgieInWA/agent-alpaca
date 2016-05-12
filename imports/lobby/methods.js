@@ -142,10 +142,16 @@ export default {
             const numPlayers = lobby.userIds.length;
             const game = {
                 name: lobby.name,
-                players: {
-                    red: lobby.userIds.slice(0, Math.floor(numPlayers/2)),
-                    blue: lobby.userIds.slice(Math.floor(numPlayers/2)),
-                },
+                teams: [
+                    {
+                        colour: 'red',
+                        playerIds: lobby.userIds.slice(0, Math.floor(numPlayers/2)),
+                    },
+                    {
+                        colour: 'blue',
+                        playerIds: lobby.userIds.slice(Math.floor(numPlayers/2)),
+                    },
+                ],
             };
 
             const gameId = Games.insert(game);

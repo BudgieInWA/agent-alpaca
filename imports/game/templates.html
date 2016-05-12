@@ -19,33 +19,34 @@
         </header>
 
         <section class="players">
-            <div class="red team">
-                <h3>Red Team</h3>
-                <ul>
-                    {{#each userId in players.red}}
-                        <li>
-                            {{#if (isSpymaster userId)}}
-                                <span class="badge">spymaster</span>
-                            {{/if}}
-                            {{> userReference id=userId}}
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
-
-            <div class="blue team">
-                <h3>Blue Team</h3>
-                <ul>
-                    {{#each userId in players.blue}}
-                        <li>
-                            {{#if (isSpymaster userId)}}
-                                <span class="badge">spymaster</span>
-                            {{/if}}
-                            {{> userReference id=userId}}
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
+            {{#each team in teams}}
+                <div class="{{team.colour}} team">
+                    <h3>
+                        {{teamName team.colour}}
+                        <span class="score">{{team.score}}</span>
+                    </h3>
+                    <ul>
+                        {{#each userId in team.playerIds}}
+                            <li>
+                                {{#if (isSpymaster userId)}}
+                                    <span class="badge">spymaster</span>
+                                {{/if}}
+                                {{> userReference id=userId}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <div class="round-info">
+                        <div class="cards-remaining">
+                            <label for="game-{{_id}}-round.teams.{{team.colour}}.cardsRemaining">
+                                Cards Remaining
+                            </label>
+                            <span id="game-{{_id}}-round.teams.{{team.colour}}.cardsRemaining">
+                                {{team.cardsRemaining}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
         </section>
 
         {{#if round}}

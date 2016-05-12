@@ -52,6 +52,18 @@ section.players {
 			@extend h4;
 
 			margin: 0;
+
+			.score {
+				font-weight: bold;
+				&::before {
+					content: "- ";
+					font-weight: normal;
+				}
+				&::after {
+					content: " rounds";
+					font-weight: normal;
+				}
+			}
 		}
 		> ul {
 			@extend .list-group;
@@ -59,12 +71,13 @@ section.players {
 				@extend .list-group-item;
 			}
 		}
+		> .round-info {
+			@extend .panel-footer;
+		}
 	}
 	> .red.team  { @extend .panel-red  }
 	> .blue.team { @extend .panel-blue }
 }
-
-
 
 
 section.no-round {

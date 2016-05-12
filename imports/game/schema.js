@@ -36,6 +36,21 @@ export const turnSchema = new SimpleSchema({
     },
 });
 
+export const roundTeamSchema = new SimpleSchema({
+    colour: {
+        label: "Colour",
+        type: String,
+    },
+    spymasterId: {
+        label: "Spymaster",
+        type: String,
+    },
+    cardsRemaining: {
+        label: "Cards Remaining",
+        type: Number,
+    },
+});
+
 export const roundSchema = new SimpleSchema({
     number: {
         label: "Round #",
@@ -46,17 +61,9 @@ export const roundSchema = new SimpleSchema({
         type: Boolean,
     },
 
-    spymasters: {
-        label: "Spymasters",
-        type: Object,
-    },
-    'spymasters.red': {
-        label: "Red Spymaster",
-        type: String,
-    },
-    'spymasters.blue': {
-        label: "Blue Spymaster",
-        type: String,
+    teams: {
+        label: "Teams",
+        type: [roundTeamSchema],
     },
 
     cards: {
@@ -84,40 +91,31 @@ export const roundSchema = new SimpleSchema({
     }
 });
 
+export const teamSchema = new SimpleSchema({
+    colour: {
+        label: "Colour",
+        type: String,
+    },
+    playerIds: {
+        label: "Players",
+        type: [String],
+    },
+    score: {
+        label: "Score",
+        type: Number,
+        defaultValue: 0,
+    },
+});
+
 export default new SimpleSchema({
     name: {
         label: "Name",
         type: String,
     },
 
-    players: {
-        label: "Players",
-        type: Object,
-    },
-
-    'players.red': {
-        label: "Red Team Players",
-        type: [String],
-    },
-    'players.blue': {
-        label: "Blue Team Players",
-        type: [String],
-    },
-
-    scores: {
-        label: "Scores",
-        type: Object,
-        defaultValue: {'red': 0, 'blue': 0},
-    },
-    'scores.red': {
-        label: "Red Score",
-        type: Number,
-        min: 0,
-    },
-    'scores.blue': {
-        label: "Blue Score",
-        type: Number,
-        min: 0,
+    teams: {
+        label: "Teams",
+        type: [teamSchema],
     },
 
     round: {

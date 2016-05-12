@@ -32,13 +32,13 @@ Template.gameScreen.helpers({
 
 
 Template.gameDetails.onCreated(function() {
-    this.team = new ReactiveVar(null);
+    this.team = new ReactiveVar(null); // TODO? whole team instead of colour?
     this.autorun(() => {
         const game = Template.currentData(); // For reactivity.
-        if (game && game.players) {
-            _.each(['red', 'blue'], t => {
-                if (_.includes(game.players[t], Meteor.userId())) {
-                    this.team.set(t);
+        if (game && game.teams) {
+            _.each(game.teams, team => {
+                if (_.includes(team.playerIds, Meteor.userId())) {
+                    this.team.set(team.colour);
                 }
             });
         }
@@ -48,8 +48,8 @@ Template.gameDetails.onCreated(function() {
 Template.gameDetails.helpers({
     isSpymaster(userId) {
         const game = this;
-        return game.round && game.round.spymasters &&
-            (game.round.spymasters.red === userId || game.round.spymasters.blue === userId);
+        return game && game.round &&
+            _.some(game.round.teams, t => t.spymasterId === userId);
     },
 
     myTurn() {
@@ -76,20 +76,22 @@ Template.gameDetails.helpers({
 
     canGiveClue() {
         const game = this;
-        const team = Template.instance().team.get();
+        const teamColour = Template.instance().team.get();
         if (!game.round || game.round.isEnded) return false;
         if (!game.round.turn) return false;
-        if (game.round.turn.team !== team) return false;
-        return game.round.spymasters[team] === Meteor.userId();
+        if (game.round.turn.team !== teamColour) return false;
+        const team = _.find(game.round.teams, { colour: teamColour });
+        return team.spymasterId === Meteor.userId();
     },
 
     canGuess() {
         const game = this;
-        const team = Template.instance().team.get();
+        const teamColour = Template.instance().team.get();
         if (!game.round || game.round.isEnded) return false;
-        if (!game.round.turn || game.round.turn.team !== team) return false;
+        if (!game.round.turn || game.round.turn.team !== teamColour) return false;
         if (!game.round.turn.clue) return false;
-        if (game.round.spymasters[team] === Meteor.userId()) return false;
+        const team = _.find(game.round.teams, { colour: teamColour });
+        if (team.spymasterId === Meteor.userId()) return false;
         return game.round.turn.guessesRemaining >= 0;
     },
 });

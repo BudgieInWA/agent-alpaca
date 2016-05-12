@@ -13,14 +13,18 @@ if (Meteor.isServer) {
     things = require('/imports/things').default;
 }
 
-function checkInGame(game, playerId) {
+function getGame(id, playerId) {
+    const game = Games.findOne({
+        _id: id,
+        'teams.playerIds': playerId,
+    });
     if (!game) {
         throw new Meteor.Error('game-not-found', "Cannot find the game.");
     }
-    if (_.includes(game.players.red, playerId)) return 'red';
-    if (_.includes(game.players.blue, playerId)) return 'blue';
-
-    throw new Meteor.Error('not-in-game', "Must be in a game to make a move.");
+    return game;
+}
+function getTeam(game, playerId) {
+    return _.find(game.teams, t => _.includes(t.playerIds, playerId));
 }
 
 function makeCards({ numCards = 25, numRed = 9, numBlue = 9, numBlack = 1 }) {
@@ -52,28 +56,40 @@ export default {
             id: { type: String },
         },
         run: function ({ id }) {
-            const game = Games.findOne(id);
-            checkInGame(game, this.userId);
+            const game = getGame(id, this.userId);
+            const teams = _.keyBy(game.teams, 'colour');
 
             if (game.round && !game.round.isEnded) {
                 throw new Meteor.Error('round-in-progress', "Cannot start a round during a round");
             }
 
+            const numRed = 1;
+            const numBlue = 1;
+            const numCards = 1;
             const round = {
                 number: 1,
-                spymasters: {
-                    red: game.players.red[0],
-                    blue: game.players.blue[0],
-                },
-                cards: makeCards({}),
+                teams: [
+                    {
+                        colour: 'red',
+                        spymasterId: teams.red.playerIds[0],
+                        cardsRemaining: numRed,
+                    },
+                    {
+                        colour: 'blue',
+                        spymasterId: teams.blue.playerIds[0],
+                        cardsRemaining: numBlue,
+                    },
+                ],
+                cards: makeCards({ numCards, numRed, numBlue, }),
                 isEnded: false,
             };
             if (game.round) {
                 round.number = game.round.number + 1;
-                _.each(['red', 'blue'], t => {
-                    const teammates = game.players[t];
-                    const currentIndex = _.findIndex(teammates, this.userId);
-                    round.spymasters[t] = teammates[(currentIndex + 1) % teammates.length]
+                // Change spymasters.
+                _.each(round.teams, team => {
+                    const players = teams[team.colour].playerIds;
+                    const currentIndex = _.findIndex(players, team.spymasterId);
+                    team.spymasterId = players[(currentIndex + 1) % players.length];
                 });
             }
 
@@ -92,19 +108,20 @@ export default {
             id: { type: String },
         },
         run: function ({ id }) {
-            const game = Games.findOne(id);
-            const team = checkInGame(game, this.userId);
+            const game = getGame(id, this.userId);
 
             if (!game.round || game.round.isEnded) {
                 throw new Meteor.Error('not-in-round', "Must be in a round to move.");
             }
 
-            const turn = {
+            const team = getTeam(game, this.userId);
+
+            const nextTurn = {
                 number: 1,
-                team: 'red',
+                team: 'red', // XXX normal game type.
             };
             if (game.round.turn) {
-                if (game.round.turn.team !== team) {
+                if (game.round.turn.team !== team.colour) {
                     throw new Meteor.Error('not-your-turn', "Must be your turn to move.");
                 }
                 if (!game.round.turn.clue) {
@@ -112,11 +129,11 @@ export default {
                         "Cannot end turn before a clue is given.");
                 }
 
-                turn.number = game.round.turn.number + 1;
-                turn.team = (game.round.turn.team === 'red' ? 'blue' : 'red');
+                nextTurn.number = game.round.turn.number + 1;
+                nextTurn.team = (game.round.turn.team === 'red' ? 'blue' : 'red'); // XXX normal game type.
             }
 
-            Games.update(id, { $set: { 'round.turn': turn } });
+            Games.update(id, { $set: { 'round.turn': nextTurn } });
         },
     }),
 
@@ -132,16 +149,20 @@ export default {
             clue: { type: clueSchema },
         },
         run: function ({ id, clue } ) {
-            const game = Games.findOne(id);
-            const team = checkInGame(game, this.userId);
+            const game = getGame(id, this.userId);
 
             if (!game.round || game.round.isEnded) {
                 throw new Meteor.Error('not-in-round', "Must be in a round to move.");
             }
-            if (!game.round.turn || game.round.turn.team !== team) {
+
+            const team = getTeam(game, this.userId);
+
+            if (!game.round.turn || game.round.turn.team !== team.colour) {
                 throw new Meteor.Error('not-your-turn', "Must be your turn to move.");
             }
-            if (game.round.spymasters[team] !== this.userId) {
+
+            const teamRound = _.find(game.round.teams, { colour: team.colour });
+            if (teamRound.spymasterId !== this.userId) {
                 throw new Meteor.Error('not-spymaster', "Must be Spymaster to give a clue.");
             }
             if (game.round.turn.clue) {
@@ -170,19 +191,21 @@ export default {
             cardIndex: { type: Number, min: 0 },
         },
         run: function ({ id, cardIndex } ) {
-            const game = Games.findOne(id);
-            const team = checkInGame(game, this.userId);
+            const game = getGame(id, this.userId);
 
             if (!game.round || game.round.isEnded) {
                 throw new Meteor.Error('not-in-round', "Must be in a round to move.");
             }
-            if (!game.round.turn || game.round.turn.team !== team) {
+
+            const team = getTeam(game, this.userId);
+
+            if (!game.round.turn || game.round.turn.team !== team.colour) {
                 throw new Meteor.Error('not-your-turn', "Must be your turn to move.");
             }
             if (!game.round.turn.clue) {
                 throw new Meteor.Error('no-clue', "Cannot guess without a clue.");
             }
-            if (game.round.spymasters[team] === this.userId) {
+            if (team.spymasterId === this.userId) {
                 throw new Meteor.Error('not-guesser', "The Spymaster cannot guess.");
             }
 
@@ -199,40 +222,35 @@ export default {
                     "Cannot guess a card that has already been guessed.");
             }
 
-            let guessesRemaining = game.round.turn.guessesRemaining;
-            if (card.colour === team) {
-                guessesRemaining -= 1;
+            // Cover the card.
+            card.coveringColour = card.colour;
+
+            // Update remaining guesses and see if someone won.
+            const teamsByColour = _.keyBy(game.teams, 'colour');
+            if (card.colour === team.colour) {
+                game.round.turn.guessesRemaining -= 1;
             } else {
-                guessesRemaining = 0;
+                game.round.turn.guessesRemaining = 0;
             }
 
-            let isEnded = false;
-            let scores = game.scores;
             if (card.colour === 'black') {
                 // The guesser just lost the round.
-                isEnded = true;
-                scores[team === 'red' ? 'blue' : 'red'] += 1;
-                console.log(team, "lost");
-            } else if (!_.some(game.round.cards, c => c.colour === 'red' && !c.coveringColour)) {
-                // Red just won.
-                isEnded = true;
-                scores.red += 1;
-                console.log("red won");
-            } else if (!_.some(game.round.cards, c => c.colour === 'blue' && !c.coveringColour)) {
-                // Blue just won.
-                isEnded = true;
-                scores.blue += 1;
-                console.log("blue won");
+                game.round.isEnded = true;
+                teamsByColour[team.colour].score -= 1;
+                console.log(team.colour, "lost");
+            } else if (card.colour === 'grey') {
+                // No one can win.
+            } else {
+                _.each(game.teams, t => {
+                    if (!_.some(game.round.cards, c => c.colour === t.colour && !c.coveringColour)) {
+                        game.round.isEnded = true;
+                        teamsByColour[t.colour].score += 1;
+                        console.log(t.colour, "won");
+                    }
+                });
             }
 
-            Games.update(id, {
-                $set: {
-                    [`round.cards.${cardIndex}.coveringColour`]: card.colour,
-                    'round.turn.guessesRemaining': guessesRemaining,
-                    'round.isEnded': isEnded,
-                    scores,
-                },
-            });
+            Games.update(id, { $set: game });
         },
     }),
 
