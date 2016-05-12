@@ -24,7 +24,7 @@ function checkInGame(game, playerId) {
 }
 
 function makeCards({ rows = 5, columns = 5, numBlue = 8, numRed = 9, numBlack = 1 }) {
-    if (Meteor.isClient) return [[]];
+    if (Meteor.isClient) return [];
 
     const numCards = rows * columns;
     const numGrey = numCards - numBlue - numRed - numBlack;

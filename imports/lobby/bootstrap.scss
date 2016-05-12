@@ -26,6 +26,11 @@ article.lobby {
 		@extend .btn-warning;
 	}
 
+	.start-game {
+		@extend .btn;
+		@extend .btn-success;
+	}
+
 	.players {
 		@extend .panel;
 		> h2 {
