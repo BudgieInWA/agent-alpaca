@@ -1,4 +1,8 @@
 // Components.
+$card-width: 110px;
+$card-height: $card-width / 1.618;
+$card-margin: $panel-body-padding;
+
 
 // Red team panel.
 .panel-red {
@@ -80,17 +84,21 @@ section.no-turn {
 	}
 }
 
-section.round > .round-ended {
-	@extend .alert;
-	@extend .alert-success;
-	overflow: hidden; // Clearfix.
+section.round {
+	max-width: 5 * $card-width + 6 * $card-margin + 1px;
 
-	button {
-		float: right;
-	}
-	.next-round {
-		@extend .btn;
-		@extend .btn-primary;
+	> .round-ended {
+		@extend .alert;
+		@extend .alert-success;
+		overflow: hidden; // Clearfix.
+
+		button {
+			float: right;
+		}
+		.next-round {
+			@extend .btn;
+			@extend .btn-primary;
+		}
 	}
 }
 
@@ -193,14 +201,14 @@ section.turn {
 	justify-content: space-between;
 	align-items: flex-start;
 
-	padding: 0 $panel-body-padding $panel-body-padding 0;
+	padding: 0 $card-margin $card-margin 0;
 
 	$card-radius: 2px;
 	.card {
 		position: relative;
-		width: 8em;
-		height: 5em;
-		margin: $panel-body-padding 0 0 $panel-body-padding;
+		width: $card-width;
+		height: $card-height;
+		margin: $card-margin 0 0 $card-margin;
 
 		background-color: #eee;
 		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);

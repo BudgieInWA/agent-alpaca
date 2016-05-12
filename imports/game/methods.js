@@ -23,10 +23,9 @@ function checkInGame(game, playerId) {
     throw new Meteor.Error('not-in-game', "Must be in a game to make a move.");
 }
 
-function makeCards({ rows = 5, columns = 5, numBlue = 8, numRed = 9, numBlack = 1 }) {
+function makeCards({ numCards = 25, numRed = 9, numBlue = 9, numBlack = 1 }) {
     if (Meteor.isClient) return [];
 
-    const numCards = rows * columns;
     const numGrey = numCards - numBlue - numRed - numBlack;
     return _([])
         .concat(_.times(numRed,   _.constant('red')))
