@@ -11,8 +11,9 @@ import './routes.js';
 import '/imports/components';
 
 // Trigger each modules entry point.
-import '/imports/lobby/client.js';
 import '/imports/game/client.js';
+import '/imports/lobby/client.js';
+import '/imports/tutorial/client.js';
 
 Meteor.startup(function() {
     // Make sure everybody is "logged in".

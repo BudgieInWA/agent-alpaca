@@ -1,0 +1,19 @@
+article.intro {
+	max-width: 40em;
+	margin: 0 auto;
+
+	.question {
+		@extend .blue-panel;
+
+		> .title {
+			@extend .panel-heading;
+			@extend .panel-title;
+		}
+		> .clue {
+			@extend .panel-body;
+		}
+		> .hint {
+			@extend .panel-footer;
+		}
+	}
+}

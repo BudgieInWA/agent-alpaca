@@ -1,0 +1,15 @@
+<template name="intro">
+    <article class="intro">
+        <div class="question">
+            <div class="title">
+                Do you remember who our agents are? Here's your clue.
+            </div>
+            {{>gameClue clue=introClue gameId='intro'}}
+            <div class="hint">
+                Make your choice below.
+            </div>
+        </div>
+
+        {{>gameCards cards=introCards isGuessing=true}}
+    </article>
+</template>

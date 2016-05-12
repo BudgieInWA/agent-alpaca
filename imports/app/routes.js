@@ -15,7 +15,8 @@ BlazeLayout.setRoot('body');
 
 FlowRouter.route('/', {
     action(params, queryParams) {
-        renderScreen("home");
+        console.log("inbtro")
+        renderScreen('intro');
         //FlowRouter.go('/lobby/list', params, queryParams);
     }
 });

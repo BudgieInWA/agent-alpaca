@@ -239,9 +239,21 @@ section.turn {
 		&.grey  { background-color: $team-grey-bg;  }
 		&.black { background-color: $team-black-bg; }
 
+
+		&::before {
+			content: "AGENT";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			color: $gray-light;
+			text-align: center;
+		}
+
 		@include center-child();
 		> span {
-			font-size: 130%;
+			font-size: 150%;
+			text-align: center;
 		}
 
 		> .covering {
