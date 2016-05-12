@@ -58,13 +58,11 @@ section.players {
 			margin: 0;
 
 			.score {
+				margin-left: auto;
+
 				font-weight: bold;
-				&::before {
-					content: "- ";
-					font-weight: normal;
-				}
 				&::after {
-					content: " rounds";
+					content: " points";
 					font-weight: normal;
 				}
 			}
@@ -147,6 +145,10 @@ section.turn {
 	> .clue-form::after {
 		content: ""; // An unneeded clearfix adds this in.
 	}
+
+	> .remaining {
+		@extend .panel-footer;
+	}
 }
 
 .guess-instruction {
@@ -197,8 +199,7 @@ section.turn {
 	justify-content: space-around;
 
 	> .word,
-	> .number,
-	> .remaining {
+	> .number {
 		text-align: center;
 		> span {
 			display: block;
@@ -208,6 +209,8 @@ section.turn {
 		}
 	}
 }
+
+
 
 .cards {
 	display: flex;
@@ -260,7 +263,7 @@ section.turn {
 			&.black { background: rgba($team-black, 0.7); }
 		}
 	}
-	&.guess .card:not(.covered):hover {
+	&.guessing .card:not(.covered):hover {
 		box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
 		cursor: pointer;
 	}

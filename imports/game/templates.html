@@ -55,30 +55,18 @@
                     <section class="turn {{round.turn.team}}">
                         <span class="number">Turn #{{round.turn.number}}</span>
                         <h3>
-                            {{round.turn.team}} Team's Turn
+                            {{teamName round.turn.team}}'s Turn
                         </h3>
                         {{#if round.turn.clue}}
-                            <div class="clue">
-                                <div class="word">
-                                    <label for="game-{{id}}-round.turn.clue.word">Clue</label>
-                                            <span id="game-{{id}}-round.turn.clue.word">
-                                                {{round.turn.clue.word}}
-                                            </span>
-                                </div>
-                                <div class="number">
-                                    <label for="game-{{id}}-round.turn.clue.number">Number</label>
-                                            <span id="game-{{id}}-round.turn.clue.number">
-                                                {{round.turn.clue.number}}
-                                            </span>
-                                </div>
-                                <div class="remaining">
-                                    <label for="game-{{id}}-round.turn.remainingGuesses">
-                                        Guesses
-                                    </label>
-                                            <span id="game-{{id}}-round.turn.remainingGuesses">
-                                                {{round.turn.guessesRemaining}}
-                                            </span>
-                                </div>
+                            {{>gameClue gameId=_id clue=round.turn.clue}}
+
+                            <div class="remaining">
+                                <label for="game-{{id}}-round.turn.remainingGuesses">
+                                    Guesses Remaining
+                                </label>
+                                <span id="game-{{id}}-round.turn.remainingGuesses">
+                                    {{round.turn.guessesRemaining}}
+                                </span>
                             </div>
                         {{else}}
                             {{#if canGiveClue}}
@@ -139,21 +127,7 @@
                     </div>
                 {{/if}}
 
-                <section class="cards {{if_Then_ canGuess "guess"}}">
-                    {{#each card in round.cards}}
-                        <div class="card {{card.colour}} {{if_Then_ card.coveringColour "covered" }}"
-                             data-index="{{@index}}">
-                                    <span class="word">
-                                        {{card.word}}
-                                    </span>
-                            {{#if card.coveringColour}}
-                                <div class="covering {{card.coveringColour}}">
-                                    <span>revealed {{card.coveringColour}}</span>
-                                </div>
-                            {{/if}}
-                        </div>
-                    {{/each}}
-                </section>
+                {{>gameCards cards=round.cards isGuessing=canGuess}}
             </section>
         {{else}}
             <section class="no-round">
@@ -165,6 +139,49 @@
     </article>
 </template>
 
+<!-- Context:
+    gameId
+    clue
+-->
+<template name="gameClue">
+    <div class="clue">
+        <div class="word">
+            <label for="game-{{gameId}}-round.turn.clue.word">Clue</label>
+            <span id="game-{{gameId}}-round.turn.clue.word">
+                {{clue.word}}
+            </span>
+        </div>
+        <div class="number">
+            <label for="game-{{gameId}}-round.turn.clue.number">Number</label>
+            <span id="game-{{gameId}}-round.turn.clue.number">
+                {{clue.number}}
+            </span>
+        </div>
+    </div>
+</template>
+
+<!-- Context:
+    cards
+    isGuessing
+-->
+<template name="gameCards">
+    {{log this}}
+    <section class="cards {{if_Then_ isGuessing "guessing"}}">
+        {{#each card in cards}}
+            <div class="card {{card.colour}} {{if_Then_ card.coveringColour "covered" }}"
+                 data-index="{{@index}}">
+            <span class="word">
+                {{card.word}}
+            </span>
+                {{#if card.coveringColour}}
+                    <div class="covering {{card.coveringColour}}">
+                        <span>revealed {{card.coveringColour}}</span>
+                    </div>
+                {{/if}}
+            </div>
+        {{/each}}
+    </section>
+</template>
 
 <!-- Context: game _id -->
 <template name="gameReference">
