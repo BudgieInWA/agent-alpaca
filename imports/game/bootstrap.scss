@@ -5,10 +5,12 @@ $card-margin: $panel-body-padding;
 
 
 // Red team panel.
-.panel-red {
+.red-panel {
+	@extend .panel;
 	@extend .panel-danger; // TODO
 }
-.panel-blue {
+.blue-panel {
+	@extend .panel;
 	@extend .panel-primary; // TODO
 }
 
@@ -46,9 +48,8 @@ article.game {
 
 section.players {
 	> .team {
-		@extend .panel;
-		&.red  { @extend .panel-red  } // TODO specificity is too low
-		&.blue { @extend .panel-blue }
+		&.red  { @extend .red-panel  }
+		&.blue { @extend .blue-panel }
 
 		> h3 {
 			@extend .panel-heading;
@@ -118,9 +119,8 @@ section.round {
 
 section.turn {
 	position: relative;
-	@extend .panel;
-	&.red  { @extend .panel-red  }
-	&.blue { @extend .panel-blue }
+	&.red  { @extend .red-panel  }
+	&.blue { @extend .blue-panel }
 
 	> .number {
 		position: absolute;
