@@ -51,6 +51,17 @@ Template.gameDetails.helpers({
         return game && game.round &&
             _.some(game.round.teams, t => t.spymasterId === userId);
     },
+    cardsRemaining(colour) {
+        const game = this;
+        if (game && game.round && game.round.teams) {
+            const teamRound = _.find(game.round.teams, { colour });
+            if (!teamRound) {
+                console.error("Cannot ask for cards remaining for non-team colour:", colour);
+            } else {
+                return teamRound.cardsRemaining;
+            }
+        }
+    },
 
     myTurn() {
         const game = this;

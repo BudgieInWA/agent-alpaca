@@ -225,7 +225,7 @@ export default {
             // Cover the card.
             card.coveringColour = card.colour;
 
-            // Update remaining guesses and see if someone won.
+            // Update remaining counts.
             const teamsByColour = _.keyBy(game.teams, 'colour');
             if (card.colour === team.colour) {
                 game.round.turn.guessesRemaining -= 1;
@@ -233,21 +233,22 @@ export default {
                 game.round.turn.guessesRemaining = 0;
             }
 
+            // Check for a winner.
             if (card.colour === 'black') {
                 // The guesser just lost the round.
                 game.round.isEnded = true;
                 teamsByColour[team.colour].score -= 1;
                 console.log(team.colour, "lost");
-            } else if (card.colour === 'grey') {
-                // No one can win.
             } else {
-                _.each(game.teams, t => {
-                    if (!_.some(game.round.cards, c => c.colour === t.colour && !c.coveringColour)) {
+                const cardsTeamRound = _.find(game.round.teams, { colour: card.colour});
+                if (cardsTeamRound) {
+                    cardsTeamRound.cardsRemaining -= 1;
+                    if (cardsTeamRound.cardsRemaining === 0) {
                         game.round.isEnded = true;
-                        teamsByColour[t.colour].score += 1;
-                        console.log(t.colour, "won");
+                        teamsByColour[card.colour].score += 1;
+                        console.log(card.colour, "won");
                     }
-                });
+                }
             }
 
             Games.update(id, { $set: game });

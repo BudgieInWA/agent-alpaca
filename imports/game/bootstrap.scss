@@ -47,6 +47,9 @@ article.game {
 section.players {
 	> .team {
 		@extend .panel;
+		&.red  { @extend .panel-red  } // TODO specificity is too low
+		&.blue { @extend .panel-blue }
+
 		> h3 {
 			@extend .panel-heading;
 			@extend h4;
@@ -75,8 +78,6 @@ section.players {
 			@extend .panel-footer;
 		}
 	}
-	> .red.team  { @extend .panel-red  }
-	> .blue.team { @extend .panel-blue }
 }
 
 
