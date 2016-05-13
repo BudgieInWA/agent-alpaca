@@ -70,21 +70,7 @@
                             </div>
                         {{else}}
                             {{#if canGiveClue}}
-                                <form class="clue-form">
-                                    <div class="word">
-                                        <label for="game-{{id}}-round.turn.clue.word">Word</label>
-                                        <input name="word" type="text"
-                                               id="game-{{id}}-round.turn.clue.word">
-                                    </div>
-                                    <div class="number">
-                                        <label for="game-{{id}}-round.turn.clue.word">Number</label>
-                                        <input name="number" type="number"
-                                               id="game-{{id}}-round.turn.clue.number">
-                                    </div>
-                                    <div class="buttons">
-                                        <button type="submit">Give Clue</button>
-                                    </div>
-                                </form>
+                                {{> gameClueForm }}
                             {{else}}
                                 <div class="no-clue">
                                     Waiting for a clue...
@@ -146,18 +132,40 @@
 <template name="gameClue">
     <div class="clue">
         <div class="word">
-            <label for="game-{{gameId}}-round.turn.clue.word">Clue</label>
+            <label for="game-{{gameId}}-round.turn.clue.word">Clue Word</label>
             <span id="game-{{gameId}}-round.turn.clue.word">
                 {{clue.word}}
             </span>
         </div>
         <div class="number">
-            <label for="game-{{gameId}}-round.turn.clue.number">Number</label>
+            <label for="game-{{gameId}}-round.turn.clue.number"># Agents</label>
             <span id="game-{{gameId}}-round.turn.clue.number">
                 {{clue.number}}
             </span>
         </div>
     </div>
+</template>
+
+<!-- Context:
+    gameId
+-->
+<template name="gameClueForm">
+    <form class="clue-form">
+        <div class="word">
+            <label for="game-{{gameId}}-round.turn.clue.word">Word</label>
+            <input name="word" type="text"
+                   id="game-{{gameId}}-round.turn.clue.word">
+        </div>
+        <div class="number">
+            <label for="game-{{gameId}}-round.turn.clue.word">Number</label>
+            <input name="number" type="number"
+                   id="game-{{gameId}}-round.turn.clue.number">
+        </div>
+        <div class="buttons">
+            <button type="submit">Give Clue</button>
+        </div>
+    </form>
+
 </template>
 
 <!-- Context:

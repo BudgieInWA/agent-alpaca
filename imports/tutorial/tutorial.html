@@ -1,15 +1,78 @@
 <template name="intro">
     <article class="intro">
-        <div class="question">
+        {{> introClue}}
+        {{#if showBasics}}
+            {{> introBasics civilianName='TODO'}}
+            {{> introGiveClue}}
+        {{/if}}
+    </article>
+</template>
+
+<template name="introClue">
+    <div class="intro-clue-question">
+        <div class="title">
+            Do you remember who our agents are? Here's your clue.
+        </div>
+        {{>gameClue clue=introClue gameId='intro'}}
+        <div class="hint">
+            Make your choice below.
+        </div>
+    </div>
+
+    {{>gameCards cards=introCards isGuessing=true}}
+</template>
+
+<!-- Context:
+    [civilianName] - The name of the chosen civilian.
+-->
+<template name="introBasics">
+    <section class="basic">
+        <h1>{{civilianName}} is a civilian, not one of our agents.</h1>
+        <p>
+            In this game, your <span class="term">Spymaster</span> will give you a single word clue and a number of agents that the clue relates to. It is your job pick out those agents.
+        </p>
+        <p>
+            <strong>But be careful!</strong> Some of the cards are not your agents.
+        </p>
+        <ul>
+            <li>Some are <span class="grey">civilians </span>(like {{civilianName}}) - pick one and your turn ends.</li>
+            <li>Some are on <span class="red">another team</span> - pick one and your turn ends, plus you've helped out the other team!</li>
+            <li>There is even an <span class="black">assassin</span> - pick him and you lose the round!</li>
+        </ul>
+        <p>First team to find all of their agents wins the round!</p>
+
+        <h1>Being Spymaster</h1>
+        <p>Each round, every team has a different Spymaster. When you are spymaster you will have to give a clue on each of your turns. Think of a word that relates to some of your agents but not the enemy agents <strong>and definitely not the assasin!</strong></p>
+        <ul>
+            <li>Clues must be <strong>one word</strong>.</li>
+            <li>Clues must be <strong>about the meaning of the word</strong>. This means no clues based on rhyming or spelling or that sort of thing.</li>
+            <li>Clues cannot use a word that is visible on a card. No being sneaky by using a different form of a word either.</li>
+        </ul>
+    </section>
+</template>
+
+<template name="introGiveClue">
+    <section class="intro-give-clue">
+        <div class="intro-give-clue-question">
             <div class="title">
-                Do you remember who our agents are? Here's your clue.
+                Try giving a clue for our blue agents.
             </div>
-            {{>gameClue clue=introClue gameId='intro'}}
-            <div class="hint">
-                Make your choice below.
-            </div>
+            {{>gameClueForm gameId='intro'}}
         </div>
 
-        {{>gameCards cards=introCards isGuessing=true}}
-    </article>
+        {{>gameCards cards=spymasterCards isGuessing=false}}
+
+        {{#if showResult}}
+            {{#if clueCorrect}}
+                <p><strong>Amazing!</strong> That's the same clue that I would have given.</p>
+            {{else}}
+                <p>
+                    Very good. I'm just a computer so I don't know how good your clue is
+                    (though I've been told that "{{correctClue}}, 2" is a good one).
+                </p>
+            {{/if}}
+            <p>I think you are ready to play! Go back and pick the correct agent to start.</p>
+        {{/if}}
+
+    </section>
 </template>

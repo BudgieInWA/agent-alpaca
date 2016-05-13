@@ -2,7 +2,7 @@ article.intro {
 	max-width: 40em;
 	margin: 0 auto;
 
-	.question {
+	.intro-clue-question {
 		@extend .blue-panel;
 
 		> .title {
@@ -14,6 +14,18 @@ article.intro {
 		}
 		> .hint {
 			@extend .panel-footer;
+		}
+	}
+
+	.intro-give-clue-question {
+		@extend .blue-panel;
+
+		> .title {
+			@extend .panel-heading;
+			@extend .panel-title;
+		}
+		> .clue-form {
+			@extend .panel-body;
 		}
 	}
 }
