@@ -6,19 +6,29 @@ import { clueSchema } from '/imports/game/schema';
 
 import './tutorial.html';
 
+const introCards = [
+    { coveringColour: 'grey', word: 'Jen' },
+    { coveringColour: 'blue', word: 'Alpaca' },
+    { coveringColour: 'grey', word: 'Joe' },
+];
+
+
 Template.intro.onCreated(function() {
-    Session.setDefault('intro.showBasics', false);
+    Session.setDefault('intro.chosenCivilian', null);
 });
 
 Template.intro.helpers({
     showBasics() {
-        return Session.get('intro.showBasics');
+        return !!Session.get('intro.chosenCivilian');
+    },
+    chosenCivilian() {
+        return Session.get('intro.chosenCivilian');
     },
 });
 
 
 Template.introClue.onCreated(function() {
-    _.each(_.range(3), i => {
+    _.each(introCards, (c, i) => {
         Session.setDefault(`intro.cardRevealed.${i}`, false);
     });
 });
@@ -32,34 +42,32 @@ Template.introClue.helpers({
     },
 
     introCards() {
-        return _.map([
-            { coveringColour: 'grey', word: 'Jen' },
-            { coveringColour: 'blue', word: 'Alpaca' },
-            { coveringColour: 'grey', word: 'Joe' },
-        ], (c, i) => {
-            if (!Session.get(`intro.cardRevealed.${i}`)) delete c.coveringColour;
-            return c;
+        return _.map(introCards, (c, i) => {
+            if (!Session.get(`intro.cardRevealed.${i}`)) {
+                return _.omit(c, 'coveringColour');
+            } else {
+                return c;
+            }
         });
     },
 });
 
 Template.introClue.events({
    'click .card'(event, template) {
-       console.log('click .card')
        const card = event.currentTarget;
        const index = card.dataset.index;
        Session.set(`intro.cardRevealed.${index}`, true);
-       if (index === '1') { // Alpaca
+       if (introCards[index].coveringColour === 'blue') { // Alpaca
            setTimeout(() => FlowRouter.go('/lobby/list'), 3000);
            //TODO show the pic for a bit.
        }
        else { // Civilian
-           Session.set('intro.showBasics', true);
+           Session.set('intro.chosenCivilian', introCards[index].word);
        }
    }
 });
 
-const correctClue = '???';
+const correctClue = 'nine';
 Template.introGiveClue.onCreated(function() {
     this.answerGiven = new ReactiveVar(false);
     this.clueCorrect = new ReactiveVar(false);
@@ -68,13 +76,13 @@ Template.introGiveClue.onCreated(function() {
 Template.introGiveClue.helpers({
     spymasterCards() {
         return [
-            { colour: 'grey', word: 'a' },
-            { colour: 'grey', word: 'a' },
-            { colour: 'red', word: 'a' },
-            { colour: 'red', word: 'a' },
-            { colour: 'blue', word: 'a' },
-            { colour: 'blue', word: 'a' },
-            { colour: 'black', word: 'a' },
+            { colour: 'black', word: 'arrow' },
+            { colour: 'grey',  word: 'debt' },
+            { colour: 'red',   word: 'cell' },
+            { colour: 'blue',  word: 'number' },
+            { colour: 'red',   word: 'orange' },
+            { colour: 'grey',  word: 'dog' },
+            { colour: 'blue',  word: 'cat' },
         ];
     },
 
@@ -99,6 +107,7 @@ Template.introGiveClue.events({
 
         template.answerGiven.set(true);
         if (clue.word.toLowerCase() === correctClue && clue.number === '2') {
+            // TODO set the actual clue to have it displayed.
             template.clueCorrect.set(true);
         }
     }

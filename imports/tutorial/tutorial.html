@@ -2,7 +2,7 @@
     <article class="intro">
         {{> introClue}}
         {{#if showBasics}}
-            {{> introBasics civilianName='TODO'}}
+            {{> introBasics civilianName=chosenCivilian}}
             {{> introGiveClue}}
         {{/if}}
     </article>
@@ -23,7 +23,7 @@
 </template>
 
 <!-- Context:
-    [civilianName] - The name of the chosen civilian.
+    civilianName - The name of the chosen civilian.
 -->
 <template name="introBasics">
     <section class="basic">
@@ -64,14 +64,19 @@
 
         {{#if showResult}}
             {{#if clueCorrect}}
-                <p><strong>Amazing!</strong> That's the same clue that I would have given.</p>
+                <h1>Amazing!</h1>
+                <p>That's the same clue that I thought of.</p>
             {{else}}
+                <h1>Very Good</h1>
                 <p>
-                    Very good. I'm just a computer so I don't know how good your clue is
+                    I'm just a computer so I don't know how good your clue is
                     (though I've been told that "{{correctClue}}, 2" is a good one).
                 </p>
             {{/if}}
-            <p>I think you are ready to play! Go back and pick the correct agent to start.</p>
+            <p>
+                I think you are ready to play! Pick the correct agent
+                <a href="#">back at the top</a> to get start.
+            </p>
         {{/if}}
 
     </section>
