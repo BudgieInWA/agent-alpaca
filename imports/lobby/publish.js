@@ -16,7 +16,10 @@ Meteor.publish('lobby.details', function(id) {
 
 Meteor.publish('lobby.list.public', function() {
     return Lobbies.find(
-        { isPublic: true },
+        {
+            isPublic: true,
+            gameId: null, // "open" lobbies.
+        },
         {
             fields: {
                 name: 1,

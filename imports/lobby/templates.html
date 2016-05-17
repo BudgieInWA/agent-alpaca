@@ -55,7 +55,7 @@
         </header>
 
         {{#if Template.subscriptionsReady}}
-            {{#if lobbies}}
+            {{#if lobbies.count}}
                 <div class="lobbies">
                     {{#each lobby in lobbies}}
                         <a href="/lobby/{{lobby._id}}">{{lobby.name}}</a>
@@ -67,7 +67,7 @@
                 </div>
             {{/if}}
 
-            <button class="create-lobby">New Lobby</button>
+            <button class="create-lobby">Create Lobby</button>
         {{else}}
             {{> inlineSpinner}}
         {{/if}}

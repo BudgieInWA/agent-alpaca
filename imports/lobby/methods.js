@@ -58,6 +58,11 @@ export default {
                     "Cannot join a lobby that you are already in.");
             }
 
+            if (lobby.gameId) {
+                throw new Meteor.Error('lobby-closed',
+                    "Cannot join a lobby after the game has started.");
+            }
+
             return !!Lobbies.update(
                 {_id: id},
                 {
