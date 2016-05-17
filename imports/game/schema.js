@@ -77,6 +77,23 @@ export const roundSchema = new SimpleSchema({
     'cards.$.colour': { // spymaster secret
         label: "Allegiance",
         type: String,
+        optional: true,
+        custom: function() {
+            // Required on the server only (as some clients aren't allowed to see the colour).
+            if (Meteor.isServer) { // required
+                // inserts
+                if (!this.operator) {
+                    if (!this.isSet || this.value === null || this.value === "") return "required";
+                }
+
+                // updates
+                else if (this.isSet) {
+                    if (this.operator === "$set" && this.value === null || this.value === "") return "required";
+                    if (this.operator === "$unset") return "required";
+                    if (this.operator === "$rename") return "required";
+                }
+            }
+        }
     },
     'cards.$.coveringColour': {
         label: "Covering Colour",
