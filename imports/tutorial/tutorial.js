@@ -1,7 +1,10 @@
+import _ from 'lodash';
+import { EJSON } from 'meteor/ejson';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 //import { ReactiveVar } from 'meteor/???'; // TODO here and everywhere
 
+import messages from '/imports/messages';
 import { clueSchema } from '/imports/game/schema';
 
 import './tutorial.html';
@@ -67,30 +70,30 @@ Template.introClue.events({
    }
 });
 
-const correctClue = 'nine';
+const spymasterCards = [
+    { colour: 'black', word: 'arrow' },
+    { colour: 'grey',  word: 'debt' },
+    { colour: 'red',   word: 'cell' },
+    { colour: 'blue',  word: 'number' },
+    { colour: 'red',   word: 'orange' },
+    { colour: 'grey',  word: 'dog' },
+    { colour: 'blue',  word: 'cat' },
+];
+const correctClue = { word: 'nine', number: 2 };
 Template.introGiveClue.onCreated(function() {
-    this.answerGiven = new ReactiveVar(false);
-    this.clueCorrect = new ReactiveVar(false);
+    this.clueGiven = new ReactiveVar(null);
 });
 
 Template.introGiveClue.helpers({
     spymasterCards() {
-        return [
-            { colour: 'black', word: 'arrow' },
-            { colour: 'grey',  word: 'debt' },
-            { colour: 'red',   word: 'cell' },
-            { colour: 'blue',  word: 'number' },
-            { colour: 'red',   word: 'orange' },
-            { colour: 'grey',  word: 'dog' },
-            { colour: 'blue',  word: 'cat' },
-        ];
+        return spymasterCards;
     },
 
-    showResult() {
-        return Template.instance().answerGiven.get();
+    clueGiven() {
+        return Template.instance().clueGiven.get();
     },
     clueCorrect() {
-        return Template.instance().clueCorrect.get();
+        return _.isEqual(Template.instance().clueGiven.get(), correctClue);
     },
     correctClue() {
         return correctClue;
@@ -102,14 +105,17 @@ Template.introGiveClue.events({
         event.preventDefault();
         const form = event.currentTarget;
         const vals = $(form).serializeArray();
-        const clue = _.fromPairs(_.map(vals, o => [o.name, o.value])); // Names are unique.
-        //if (clueSchema.validate) // TODO
+        // Names are unique:
+        const clue = clueSchema.clean(_.fromPairs(_.map(vals, o => [o.name, o.value])));
 
-        template.answerGiven.set(true);
-        if (clue.word.toLowerCase() === correctClue && clue.number === '2') {
-            // TODO set the actual clue to have it displayed.
-            template.clueCorrect.set(true);
+        const validationContext = clueSchema.newContext();
+        if (validationContext.validate(clue)) {
+            template.clueGiven.set(clue);
+        } else {
+            messages.error("There's a problem in that" +
+                EJSON.stringify(validationContext.errorObject()));
         }
+
     }
 
 });

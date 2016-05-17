@@ -62,7 +62,7 @@
 
         {{>gameCards cards=spymasterCards isGuessing=false}}
 
-        {{#if showResult}}
+        {{#if clueGiven}}
             {{#if clueCorrect}}
                 <h1>Amazing!</h1>
                 <p>That's the same clue that I thought of.</p>
@@ -77,6 +77,8 @@
                 I think you are ready to play! Pick the correct agent
                 <a href="#">back at the top</a> to get start.
             </p>
+
+            <button class="play">Play {{brandName}}</button>
         {{/if}}
 
     </section>
