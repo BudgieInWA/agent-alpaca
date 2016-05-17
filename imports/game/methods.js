@@ -58,6 +58,7 @@ export default {
         run: function ({ id }) {
             const game = getGame(id, this.userId);
             const teams = _.keyBy(game.teams, 'colour');
+            const roundTeams = _.keyBy(game.round.teams, 'colour');
 
             if (game.round && !game.round.isEnded) {
                 throw new Meteor.Error('round-in-progress', "Cannot start a round during a round");
@@ -66,7 +67,7 @@ export default {
             const numRed = 1;
             const numBlue = 1;
             const numCards = 1;
-            const round = {
+            const newRound = { // XXX standard game type.
                 number: 1,
                 teams: [
                     {
@@ -84,16 +85,17 @@ export default {
                 isEnded: false,
             };
             if (game.round) {
-                round.number = game.round.number + 1;
+                newRound.number = game.round.number + 1;
                 // Change spymasters.
-                _.each(round.teams, team => {
-                    const players = teams[team.colour].playerIds;
-                    const currentIndex = _.findIndex(players, team.spymasterId);
-                    team.spymasterId = players[(currentIndex + 1) % players.length];
+                _.each(newRound.teams, newTeam => {
+                    const playerIds = teams[newTeam.colour].playerIds;
+                    const spymasterId = roundTeams[newTeam.colour].spymasterId;
+                    const currentIndex = _.findIndex(playerIds, p => p === spymasterId);
+                    newTeam.spymasterId = playerIds[(currentIndex + 1) % playerIds.length];
                 });
             }
 
-            Games.update( id, { $set: { round } });
+            Games.update( id, { $set: { round: newRound } });
         },
     }),
 
@@ -238,7 +240,6 @@ export default {
                 // The guesser just lost the round.
                 game.round.isEnded = true;
                 teamsByColour[team.colour].score -= 1;
-                console.log(team.colour, "lost");
             } else {
                 const cardsTeamRound = _.find(game.round.teams, { colour: card.colour});
                 if (cardsTeamRound) {
@@ -246,7 +247,6 @@ export default {
                     if (cardsTeamRound.cardsRemaining === 0) {
                         game.round.isEnded = true;
                         teamsByColour[card.colour].score += 1;
-                        console.log(card.colour, "won");
                     }
                 }
             }

@@ -127,7 +127,7 @@ Template.gameDetails.events({
         methods.giveClue.call({ id, clue }, messages.methodCallback("Give Clue"));
     },
 
-    'click .guess .card'(event, template) {
+    'click .guessing .card'(event, template) {
         const id = template.data._id;
         const cardIndex = event.currentTarget.dataset.index;
         methods.makeGuess.call({ id, cardIndex }, messages.methodCallback("Make Guess"));
