@@ -20,6 +20,9 @@ Template.helpers({
         if (condition) return result;
     },
 
+    isEqual(a, b) {
+        return _.isEqual(a, b);
+    },
     asPairs(object) {
         return _.map(_.toPairs(object), p => ({key: p[0], value: p[1]}));
     },

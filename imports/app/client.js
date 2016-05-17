@@ -18,8 +18,9 @@ import '/imports/tutorial/client.js';
 Meteor.startup(function() {
     // Make sure everybody is "logged in".
     if (!Meteor.userId()) {
-        messages.info("Welcome to Agent Alpaca!");
-        AccountsAnonymous.login();
+        AccountsAnonymous.login(() =>{
+            messages.info("Welcome to Agent Alpaca!");
+        });
     } else {
         messages.info("Welcome back!");
     }

@@ -17,15 +17,15 @@ const introCards = [
 
 
 Template.intro.onCreated(function() {
-    Session.setDefault('intro.chosenCivilian', null);
+    Session.setDefault('intro.chosenCard', null);
 });
 
 Template.intro.helpers({
     showBasics() {
-        return !!Session.get('intro.chosenCivilian');
+        return !!Session.get('intro.chosenCard');
     },
-    chosenCivilian() {
-        return Session.get('intro.chosenCivilian');
+    chosenCard() {
+        return Session.get('intro.chosenCard');
     },
 });
 
@@ -60,14 +60,8 @@ Template.introClue.events({
        const card = event.currentTarget;
        const index = card.dataset.index;
        Session.set(`intro.cardRevealed.${index}`, true);
-       if (introCards[index].coveringColour === 'blue') { // Alpaca
-           setTimeout(() => FlowRouter.go('/lobby/list'), 3000);
-           //TODO show the pic for a bit.
-       }
-       else { // Civilian
-           Session.set('intro.chosenCivilian', introCards[index].word);
-       }
-   }
+       Session.set('intro.chosenCard', introCards[index]);
+   },
 });
 
 const spymasterCards = [
