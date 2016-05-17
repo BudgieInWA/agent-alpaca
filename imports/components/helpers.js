@@ -29,6 +29,9 @@ Template.helpers({
 });
 
 Template.helpers({
+    brandName(){
+        return "Agent Alpaca";
+    },
     teamName(team) {
         switch(team) {
             case 'red': return "Red Team";
