@@ -16,7 +16,7 @@ Template.gameScreen.onCreated(function () {
         this.id.set(FlowRouter.getParam('id'));
         this.subscribe('game.details.spymaster', this.id.get()); // This will provide the full
         // doc when needed. The doc from the other sub might replace it sometimes though.
-        this.subscribe('game.details', this.id.get());
+        this.subscribe('game.details.notSpymaster', this.id.get());
     });
     this.autorun(() => {
         this.doc.set(Games.findOne(this.id.get()));

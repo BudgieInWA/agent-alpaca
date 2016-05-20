@@ -9,13 +9,14 @@ Meteor.publish('game.reference', function(id) {
     return Games.find(id, { fields: { name: 1 } });
 });
 
-Meteor.publish('game.details', function(id) {
+Meteor.publish('game.details.notSpymaster', function(id) {
     check(id, String);
 
     return Games.find(
         {
             _id: id,
             'teams.playerIds': this.userId,
+            'round.teams.spymasterId': { $ne: this.userId },
         },
         { fields: { 'round.cards.colour': 0 } }
     );
