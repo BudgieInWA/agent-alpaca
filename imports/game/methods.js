@@ -58,7 +58,6 @@ export default {
         run: function ({ id }) {
             const game = getGame(id, this.userId);
             const teams = _.keyBy(game.teams, 'colour');
-            const roundTeams = _.keyBy(game.round.teams, 'colour');
 
             if (game.round && !game.round.isEnded) {
                 throw new Meteor.Error('round-in-progress', "Cannot start a round during a round");
@@ -85,6 +84,7 @@ export default {
                 isEnded: false,
             };
             if (game.round) {
+                const roundTeams = _.keyBy(game.round.teams, 'colour');
                 newRound.number = game.round.number + 1;
                 // Change spymasters.
                 _.each(newRound.teams, newTeam => {
