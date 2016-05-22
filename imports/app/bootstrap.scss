@@ -22,15 +22,17 @@ body {
 	padding-bottom: $footer-height; // For the sticky footer.
 }
 
+body > header > nav,
+#screen {
+	@extend .container;
+}
+
 
 // Page header.
 body > header {
 	@extend .navbar;
 	@extend .navbar-default;
 	@extend .navbar-fixed-top;
-}
-body > header > nav {
-	@extend .container-fluid;
 }
 #nav-main {
 	@extend .navbar-header;
@@ -50,9 +52,6 @@ body > header > nav {
 }
 
 
-#screen {
-	@extend .container-fluid;
-}
 
 
 // Page footer.
