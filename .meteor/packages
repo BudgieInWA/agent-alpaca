@@ -13,7 +13,17 @@ mdg:validated-method
 rlivingston:simple-schema-mixin  # for ValidatedMethod
 tunifight:loggedin-mixin         # for ValidatedMethod TODO write a better one
 
+# Accounts
+accounts-base
+service-configuration
+brettle:accounts-add-service
 brettle:accounts-anonymous
+accounts-google
+accounts-facebook
+scholtzm:accounts-steam
+
+ian:accounts-ui-bootstrap-3
+brettle:accounts-patch-ui
 
 # Util
 jquery                  # Helpful client-side library

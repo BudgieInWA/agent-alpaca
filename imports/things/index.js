@@ -14,11 +14,14 @@ function transformCase(letterCase, word) {
 }
 
 export default {
+    /**
+     * @return A random noun.
+     */
     noun({ letterCase = 'lower' }) {
         return transformCase(letterCase, Random.choice(nouns));
     },
 
-    adjective({letterCase = 'lower'}) {
+    adjective({ letterCase = 'lower' }) {
         return transformCase(letterCase, Random.choice(adjectives));
     },
 

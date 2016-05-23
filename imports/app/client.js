@@ -16,12 +16,16 @@ import '/imports/lobby/client.js';
 import '/imports/tutorial/client.js';
 
 Meteor.startup(function() {
-    // Make sure everybody is "logged in".
-    if (!Meteor.userId()) {
-        AccountsAnonymous.login(() =>{
-            messages.info("Welcome to Agent Alpaca!");
-        });
-    } else {
+    if (Meteor.userId()) {
         messages.info("Welcome back!");
     }
+
+    // Make sure everybody is "logged in".
+    Tracker.autorun(function() {
+        if (!Meteor.userId()) {
+            AccountsAnonymous.login(() => {
+                messages.info("Welcome to Agent Alpaca!");
+            });
+        }
+    });
 });
