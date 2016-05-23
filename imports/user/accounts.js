@@ -33,7 +33,7 @@ Meteor.startup(function() {
             { service: 'facebook'},
             {
                 service: 'facebook',
-                clientId: Meteor.settings.facebook.appId,
+                appId: Meteor.settings.facebook.appId,
                 secret: Meteor.settings.facebook.secret,
                 loginStyle: 'popup',
             }
@@ -65,8 +65,6 @@ Accounts.onCreateUser(
                 },
             };
             user.profile.name = user.services.guest.name;
-        } else {
-            console.log("new account from external service:", user);
         }
 
         return user;
@@ -83,10 +81,10 @@ AccountsMultiple.register({
     onSwitchFailure(attemptingUser, attempt) {
         // Only continue if the switch was rejected because `attempt.user` was merged into
         // `attemptingUser`.
-        if (!failedAttempt.error ||
-            !failedAttempt.error.error || !failedAttempt.error.reason ||
-            failedAttempt.error.error !== Accounts.LoginCancelledError.numericError ||
-            failedAttempt.error.reason !== AccountsAddService._mergeUserErrorReason) {
+        if (!attempt.error ||
+            !attempt.error.error || !attempt.error.reason ||
+            attempt.error.error !== Accounts.LoginCancelledError.numericError ||
+            attempt.error.reason !== AccountsAddService._mergeUserErrorReason) {
             return;
         }
 
@@ -98,7 +96,8 @@ AccountsMultiple.register({
                             { $set: { 'profile.name': attempt.user.services.facebook.name } });
                     break;
                 case 'google':
-                    // TODO get name from google.
+                    Meteor.users.update(attemptingUser._id,
+                            { $set: { 'profile.name': attempt.user.services.google.name } });
                     break;
                 case 'steam':
                     // TODO get name from steam.
@@ -107,3 +106,37 @@ AccountsMultiple.register({
         }
     }
 });
+
+
+/*
+A Google account profile looks like
+{
+    accessToken: 'some long string',
+    idToken: 'some really long string',
+    expiresAt: 1464002544504,
+    scope: [Object],
+    id: '123456789',
+    email: 'user@example.com',
+    verified_email: true,
+    name: 'Joe Bloggs',
+    given_name: 'Joe',
+    family_name: 'Bloggs',
+    picture: 'http://example.com/impage.jpg',
+    locale: 'en-GB',
+    gender: 'male'
+}
+
+{
+    accessToken: 'some really long string',
+    expiresAt: 1469189417581,
+    id: '12345678',
+    email: 'user@example.com',
+    name: 'Joe Bloggs',
+    first_name: 'Joe',
+    last_name: 'Bloggs',
+    link: 'https://www.facebook.com/app_scoped_user_id/12345678/',
+    gender: 'male',
+    locale: 'en_US',
+    age_range: [Object]
+}
+ */
