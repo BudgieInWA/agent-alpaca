@@ -6,6 +6,6 @@ Meteor.publish('user.reference', function(id) {
 
     return Meteor.users.find(
         { _id: id },
-        { fields: { _id: 1 } }
+        { fields: { _id: 1, profile: 1} }
     );
 });

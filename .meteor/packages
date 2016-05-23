@@ -28,6 +28,7 @@ jquery                  # Helpful client-side library
 reactive-var            # Reactive variable for tracker
 tracker                 # Meteor's client-side reactive programming library
 session                 # Session variables.
+brettle:accounts-login-state
 
 # UI
 blaze-html-templates    # Compile .html files into Meteor Blaze views.

@@ -45,9 +45,16 @@ body > header {
 	@extend .collapse;
 	@extend .navbar-collapse;
 
-	ul {
+	> ul {
 		@extend .nav;
 		@extend .navbar-nav;
+	}
+
+	> .user-details {
+		@extend .navbar-right;
+		.guest-name {
+			@extend .navbar-text;
+		}
 	}
 }
 

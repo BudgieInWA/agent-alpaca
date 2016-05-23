@@ -1,7 +1,8 @@
 <template name="userReference">
     {{#if Template.subscriptionsReady}}
         <span class="user-name {{if_Then_ isMe "me"}}">
-            {{doc._id}}
+            {{log doc}}
+            {{doc.profile.name}}
         </span>
     {{else}}
         {{> inlineSpinner}}

@@ -1,0 +1,7 @@
+<!-- Context: nothing -->
+<template name="userDetails">
+    {{#with guestUser}}
+        <li><span class="guest-name">Guest: {{profile.name}}</span></li>
+    {{/with}}
+    {{> loginButtons}}
+</template>
