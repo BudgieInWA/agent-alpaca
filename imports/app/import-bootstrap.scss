@@ -1,0 +1,6 @@
+@import "./templates/app.scss";
+
+// Trigger entry point for each module's bootstrap scss.
+@import "{}/imports/lobby/bootstrap.scss";
+@import "{}/imports/game/bootstrap.scss";
+@import "{}/imports/tutorial/bootstrap.scss"; // Must come after game.

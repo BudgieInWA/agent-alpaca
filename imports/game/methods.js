@@ -5,8 +5,8 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { simpleSchemaMixin as SimpleSchemaMixin } from 'meteor/rlivingston:simple-schema-mixin';
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin';
 
-import { clueSchema } from './schema.js'
-import Games from './collection.js';
+import { clueSchema } from './schema';
+import { Games } from './collections';
 
 let things;
 if (Meteor.isServer) {

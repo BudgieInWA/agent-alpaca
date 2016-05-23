@@ -1,2 +1,2 @@
-import './methods.js';
-import './publish.js';
+import './methods';
+import './publish';

@@ -65,7 +65,4 @@
 @import "./lumens";
 
 // All my stuff.
-@import "{}/imports/app/bootstrap.scss";
-@import "{}/imports/lobby/bootstrap.scss";
-@import "{}/imports/game/bootstrap.scss";
-@import "{}/imports/tutorial/bootstrap.scss"; // Must come after game.
+@import "{}/imports/app/import-bootstrap.scss";

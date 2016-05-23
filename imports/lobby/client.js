@@ -1,3 +1,3 @@
 // Load templates.
-import './templates.js';
+import './templates';
 

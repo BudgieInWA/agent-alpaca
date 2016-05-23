@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import Lobbies from './collection.js'
+import { Lobbies } from './collections';
 
 Meteor.publish('lobby.details', function(id) {
     check(id, String);

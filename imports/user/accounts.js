@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { ServiceConfiguration } from 'meteor/service-configuration';
 import { Accounts } from 'meteor/accounts-base';
 import { AccountsMultiple } from 'meteor/brettle:accounts-multiple';
@@ -38,7 +39,6 @@ Meteor.startup(function() {
         );
     }
 });
-
 
 
 Accounts.onCreateUser(

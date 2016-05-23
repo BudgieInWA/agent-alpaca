@@ -1,9 +1,7 @@
-//
-import './accounts.js';
-
 // Trigger server entry points for modules.
-import '/imports/lobby/server.js';
-import '/imports/game/server.js';
+import '/imports/user/server';
+import '/imports/lobby/server';
+import '/imports/game/server';
 
 // Load publishes.
-import './publish.js';
+import './publish';

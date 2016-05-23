@@ -3,9 +3,9 @@ import { Meteor } from 'meteor/meteor';
 
 import messages from '/imports/messages';
 
-import schema from './schema.js';
-import Games from './collection.js';
-import methods from './methods.js';
+import schema from './schema';
+import { Games } from './collections';
+import methods from './methods';
 
 import './templates.html';
 

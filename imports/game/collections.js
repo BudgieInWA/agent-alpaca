@@ -1,9 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import 'meteor/aldeed:simple-schema';
 
-import schema from './schema.js'
+import schema from './schema';
 
-let Games = new Mongo.Collection('game');
+export const Games = new Mongo.Collection('game');
 Games.attachSchema(schema);
-
-export default Games;

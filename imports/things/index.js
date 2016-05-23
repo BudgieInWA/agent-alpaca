@@ -1,7 +1,7 @@
 import { Random } from 'meteor/random';
 
-import nouns from './nouns.js';
-import adjectives from './adjectives.js';
+import nouns from './nouns';
+import adjectives from './adjectives';
 
 
 function transformCase(letterCase, word) {

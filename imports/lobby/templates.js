@@ -5,8 +5,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import messages from '/imports/messages';
 
-import Lobbies from './collection.js';
-import methods from './methods.js';
+import { Lobbies } from './collections';
+import methods from './methods';
 
 import './templates.html';
 

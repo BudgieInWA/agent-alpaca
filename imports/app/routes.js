@@ -1,7 +1,6 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
-import './templates.js' // App template.
 import lobbyScreens from '/imports/lobby/templates';
 import gameScreens from '/imports/game/templates';
 
@@ -15,7 +14,6 @@ BlazeLayout.setRoot('body');
 
 FlowRouter.route('/', {
     action(params, queryParams) {
-        console.log("inbtro")
         renderScreen('intro');
         //FlowRouter.go('/lobby/list', params, queryParams);
     }

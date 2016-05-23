@@ -4,9 +4,9 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { simpleSchemaMixin as SimpleSchemaMixin } from 'meteor/rlivingston:simple-schema-mixin';
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin';
 
-import Lobbies from './collection.js';
+import { Lobbies } from './collections';
 
-import Games from '/imports/game/collection.js';
+import { Games } from '/imports/game/collections';
 
 let things;
 if (Meteor.isServer) {

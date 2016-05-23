@@ -1,2 +1,2 @@
 // App client entry point.
-import '/imports/app/client.js';
+import '/imports/app/client';

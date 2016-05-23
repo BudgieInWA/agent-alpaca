@@ -2,12 +2,12 @@ import _ from 'lodash';
 import { EJSON } from 'meteor/ejson';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
-//import { ReactiveVar } from 'meteor/???'; // TODO here and everywhere
+import { ReactiveVar } from 'meteor/reactive-var';
 
 import messages from '/imports/messages';
 import { clueSchema } from '/imports/game/schema';
 
-import './tutorial.html';
+import './templates.html';
 
 const introCards = [
     { coveringColour: 'grey', word: 'Jen' },

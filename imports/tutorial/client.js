@@ -1,1 +1,1 @@
-import './tutorial.js'
+import './templates';
