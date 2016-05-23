@@ -13,17 +13,15 @@ mdg:validated-method
 rlivingston:simple-schema-mixin  # for ValidatedMethod
 tunifight:loggedin-mixin         # for ValidatedMethod TODO write a better one
 
-# Accounts
+## Accounts
 accounts-base
 service-configuration
 brettle:accounts-add-service
+brettle:accounts-logout-to-switch
 brettle:accounts-anonymous
 accounts-google
 accounts-facebook
 scholtzm:accounts-steam
-
-ian:accounts-ui-bootstrap-3
-brettle:accounts-patch-ui
 
 # Util
 jquery                  # Helpful client-side library
@@ -37,6 +35,10 @@ fourseven:scss          # Sass compiler for .scss files.
 mobile-experience       # Packages for a great mobile UX.
 kadira:flow-router
 kadira:blaze-layout
+
+## Components
+ian:accounts-ui-bootstrap-3
+brettle:accounts-patch-ui
 
 # Build
 standard-minifier-css   # CSS minifier run for production mode

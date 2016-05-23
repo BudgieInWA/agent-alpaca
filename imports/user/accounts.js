@@ -54,6 +54,9 @@ Accounts.onCreateUser(
         if (!user.services) {
             // This is a guest account created by brettle:accounts-anonymous.
             user.displayName = things.fancyNoun({ letterCase: 'title' });
+            //TODO? always add this stuff to the user doc so that if a client manages to log in
+            // using an external service without already being logged in to an anonymous account,
+            // they get the anonymous stuff anyway?
         } else {
             // This is an account created by someone logging in using a 3rd party service for the
             // first time.
@@ -67,29 +70,3 @@ Accounts.onCreateUser(
         return user;
     }
 );
-
-AccountsMultiple.register({
-    /**
-     * Called when a logged in user attempts to log into another existing account.
-     *
-     * @param attemptingUser - The currently logged in user.
-     * @param attempt
-     * @param attempt.user - The user account that the login attempt is for.
-     * @return {Boolean} If the login should be allowed to succeed.
-     * @throws If the login should be rejected.
-     */
-    validateSwitch(attemptingUser, attempt) {
-       //TODO reject if both accounts have the same service attached or if attemptingUser isn't guest.
-       //TODO? reject if we're not sure that the user wants to merge the accounts.
-    },
-
-    /**
-     * Called when a logged in user logs into another existing account.
-     *
-     * @param attemptingUser
-     * @param attempt
-     */
-    onSwitch(attemptingUser, attempt) {
-        //TODO migrate attemptingUser with attempt.user
-    }
-});
