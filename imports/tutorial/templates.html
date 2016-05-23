@@ -1,9 +1,14 @@
 <template name="intro">
     <article class="intro">
-        {{> introClue}}
+        <h1>Help! Make contact with our agent!</h1>
+        <section class="interactive">
+            {{> introClue}}
+        </section>
         {{#if showBasics}}
             {{> introBasics card=chosenCard}}
-            {{> introGiveClue}}
+            <section class="interactive">
+                {{> introGiveClue}}
+            </section>
         {{/if}}
     </article>
 </template>
@@ -11,11 +16,11 @@
 <template name="introClue">
     <div class="intro-clue-question">
         <div class="title">
-            I need you to make contact with one of our agents. Here's your clue.
+            Here's your clue.
         </div>
         {{>gameClue clue=introClue gameId='intro'}}
         <div class="hint">
-            Which one is our agent? Choose by clicking on a card below.
+            Which one is our agent? Make a guess by clicking on a card below.
         </div>
     </div>
 
@@ -50,11 +55,12 @@
         <p>First team to find all of their agents wins the round!</p>
 
         <h1>Being Spymaster</h1>
-        <p>Each round, every team has a different Spymaster. When you are spymaster you will have to give a clue on each of your turns. Think of a word that relates to some of your agents but not the enemy agents <strong>and definitely not the assassin!</strong></p>
+        <p>Each round, every team will have one Spymaster. When you are Spymaster you must give a clue on your teams turn. Think of a word that relates to some of your agents but not to any other cards on the table.</p>
         <ul>
             <li>Clues must be <strong>one word</strong>.</li>
             <li>Clues must be <strong>about the meaning of the word</strong>. This means no clues based on rhyming or spelling or that sort of thing.</li>
-            <li>Clues cannot use a word that is visible on a card. No being sneaky by using a different form of a word either.</li>
+            <li>Clues cannot use a word that is on any visible card. No being sneaky by using a different form of a word either.</li>
+            <li>Take extra care to avoid clues that might cause your team to guess the assassin or the other teams agents.</li>
         </ul>
     </section>
 </template>

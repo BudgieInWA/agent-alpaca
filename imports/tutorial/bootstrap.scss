@@ -1,6 +1,15 @@
 article.intro {
-	max-width: 40em;
-	margin: 0 auto;
+	.interactive {
+		max-width: 33em;
+		margin: 2em auto;
+	}
+	.cards.guessing {
+		justify-content: space-around;
+		> .card:last-child {
+			margin-right: 0;
+		}
+	}
+
 
 	.intro-clue-question {
 		@extend .blue-panel;

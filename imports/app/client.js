@@ -13,3 +13,4 @@ import './templates';
 import '/imports/user/client';
 import '/imports/game/client';
 import '/imports/lobby/client';
+import '/imports/tutorial/client';
