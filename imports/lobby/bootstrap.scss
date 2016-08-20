@@ -33,7 +33,9 @@ article.lobby {
 
 	.players {
 		@extend .panel;
+		@extend .panel-default;
 		> h2 {
+			@extend .panel-heading;
 			@extend .panel-title;
 		}
 		> ul {
